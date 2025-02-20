@@ -36,13 +36,16 @@ jobs:
         touch db.sqlite3 && \
         chmod 664 db.sqlite3
 
-    - name: Make Migrations
+    - name: Add Environment Variables
       run: |
-        python manage.py makemigrations
+        export my_env_var=${{ env.DB_NAME }} && \
+        export my_env_var=${{ env.DB_ENGINE }} && \
+        export my_env_var=${{ env.DB_PASSWORD }} && \
+        export my_env_var=${{ env.DB_PORT }} && \
+        export my_env_var=${{ env.DB_HOST }}
 
-    - name: Apply Migrations
-      run: |
-        python manage.py migrate
+    - name: Integrate legacy DB
+      run: python manage.py inspectdb | Out-File -Encoding utf8 models.py
 
     - name: Check for Syntax Errors
       run: |
