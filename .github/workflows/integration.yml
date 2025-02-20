@@ -31,19 +31,14 @@ jobs:
       run: |
         python manage.py collectstatic --noinput
 
-    - name: Create SQLite DB and Add permission
-      run: |
-        touch db.sqlite3 && \
-        chmod 664 db.sqlite3
-
     - name: Add Environment Variables
       run: |
-        export my_env_var=${{ env.DB_NAME }} && \
-        export my_env_var=${{ env.DB_ENGINE }} && \
-        export my_env_var=${{ env.DB_SECRET_KEY }} && \
-        export my_env_var=${{ env.DB_PORT }} && \
-        export my_env_var=${{ env.DB_USER }} && \
-        export my_env_var=${{ env.DB_HOST }}
+        export DB_NAME=${{ env.DB_NAME }} && \
+        export DB_ENGINE=${{ env.DB_ENGINE }} && \
+        export DB_SECRET_KEY=${{ env.DB_SECRET_KEY }} && \
+        export DB_PORT=${{ env.DB_PORT }} && \
+        export DB_USER=${{ env.DB_USER }} && \
+        export DB_HOST=${{ env.DB_HOST }}
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | Out-File -Encoding utf8 models.py
