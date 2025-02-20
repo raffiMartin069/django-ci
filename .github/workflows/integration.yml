@@ -13,7 +13,7 @@ jobs:
     env:
       DB_NAME: dummy
       DB_ENGINE: ${{ vars.DB_ENGINE }}
-      DB_SECRET_KEY: password
+      DB_SECRET_KEY:
       DB_PORT: 5432
       DB_USER: postgres
       DB_HOST: localhost
@@ -52,7 +52,7 @@ jobs:
 
     - name: Restore Schema from Dump
       run: |
-        PGPASSWORD="password" psql -h localhost -U postgres -d dummy -f dummy.sql
+        PGPASSWORD="" psql -h localhost -U postgres -d dummy -f dummy.sql
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | tee models.py
