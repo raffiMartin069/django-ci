@@ -54,12 +54,12 @@ jobs:
       run:
           sudo -i -u postgres psql -c "CREATE DATABASE dummy;"
 
-    - name: Provide access
-      run: sudo chmod a+rwx $GITHUB_WORKSPACE
+    - name: Transfer db file
+      run: sudo mv dummy.sql /var/lib/pgsql/
 
     - name: Restore Schema from Dump
       run: |
-        sudo -u postgres psql -d dummy -f $GITHUB_WORKSPACE/dummy.sql
+        sudo -u postgres psql -d dummy -f /var/lib/pgsql/dummy.sql
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | tee models.py
