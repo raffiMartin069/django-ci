@@ -44,8 +44,8 @@ jobs:
       run: pip install gdown
 
     - name: Download SQL File from Google Drive
-      run: gdown ${{ secrets.DB_SCHEMA }}
-#
+      run: gdown "https://drive.google.com/file/d/1XymczK_5uqNvfENbLqoc5oh7RMt6NndZ/view?usp=sharing" -O dummy.sql
+
     - name: Install PostgreSQL Client
       run: sudo apt-get install -y postgresql-client
 
