@@ -41,7 +41,7 @@ jobs:
         export DB_HOST=${{ env.DB_HOST }}
 
     - name: Integrate legacy DB
-      run: python manage.py inspectdb | Out-File -Encoding utf8 models.py
+      run: python manage.py inspectdb | tee models.py
 
     - name: Check for Syntax Errors
       run: |
