@@ -47,8 +47,12 @@ jobs:
     - name: Install PostgreSQL Client
       run: sudo apt-get install -y postgresql-client
 
-    - name: Run database
+    - name: Run psql
       run: sudo service postgresql restart
+
+    - name: Create database
+      run:
+          sudo -i -u postgres psql -c "CREATE DATABASE dummy;"
 
     - name: Restore Schema from Dump
       run: |
