@@ -1,4 +1,4 @@
-﻿# This is an auto-generated Django model module.
+# This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
@@ -125,11 +125,12 @@ class BlotterCase(models.Model):
     blotter_status = models.ForeignKey('BlotterStatus', models.DO_NOTHING)
     nr_complainant = models.ForeignKey('NonResident', models.DO_NOTHING, blank=True, null=True)
     r_complainant = models.ForeignKey('Resident', models.DO_NOTHING, blank=True, null=True)
-    respondent = models.ForeignKey('Resident', models.DO_NOTHING, related_name='blottercase_respondent_set')
+    r_respondent = models.ForeignKey('Resident', models.DO_NOTHING, related_name='blottercase_r_respondent_set', blank=True, null=True)
     case_type = models.ForeignKey('CaseType', models.DO_NOTHING)
     case = models.ForeignKey('Casee', models.DO_NOTHING)
     user = models.ForeignKey('Userr', models.DO_NOTHING)
     time_filed = models.TimeField(blank=True, null=True)
+    nr_respondent = models.ForeignKey('NonResident', models.DO_NOTHING, related_name='blottercase_nr_respondent_set', blank=True, null=True)
 
     class Meta:
         managed = False
