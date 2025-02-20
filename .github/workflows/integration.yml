@@ -17,8 +17,8 @@ jobs:
       DB_PORT: 5432
       DB_USER: postgres
       DB_HOST: localhost
-      ports:
-        - 5432:5432
+    ports:
+      - 5432:5432
 
     strategy:
       max-parallel: 4
