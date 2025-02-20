@@ -55,11 +55,11 @@ jobs:
           sudo -i -u postgres psql -c "CREATE DATABASE dummy;"
 
     - name: Transfer db file
-      run: sudo mv dummy.sql /var/lib/pgsql/
+      run: sudo mv dummy.sql /tmp/dummy.sql && sudo chmod 644 /tmp/dummy.sql
 
     - name: Restore Schema from Dump
       run: |
-        sudo -u postgres psql -d dummy -f /var/lib/pgsql/dummy.sql
+        sudo -u postgres psql -d dummy -f /tmp/dummy.sql
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | tee models.py
