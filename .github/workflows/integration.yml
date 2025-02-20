@@ -52,7 +52,7 @@ jobs:
 
     - name: Restore Schema from Dump
       run: |
-        PGPASSWORD="" psql -h localhost -U postgres -d dummy -f dummy.sql
+        sudo -i -u postgres psql -d dummy -f dummy.sql
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | tee models.py
