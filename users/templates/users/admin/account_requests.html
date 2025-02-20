@@ -1,0 +1,104 @@
+{% extends "admin/admin_users_dashboard.html" %}
+{% load static %}
+
+{% block title %}
+Admin - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+
+<!-- temporarily added -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<div class="container-fluid">
+  <h2 class="mt-2">Account Requests</h2>    
+  <hr class="my-3">
+  <div class="row">
+       <!-- <div class="col-lg-12">
+        <div class="row g-2 align-items-center mb-3">
+           Date 
+          <div class="col-4 align-items-center">
+              <div class="form-floating">
+                  <input type="date" id="date_logs" name="date_logs" class="form-control bg-light" placeholder="Select Date">
+                  <label for="date_logs">Select Date</label>
+              </div>
+          </div>
+        </div> -->
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div id="messages" class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="mb-5">
+          <table id="table" class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Account Request ID</th>
+                  <th scope="col">Requester Information</th>
+                  <th scope="col">
+                    Requested Account Name
+                    <br>
+                    <small><i>(First Name, Middle Name, Last Name)</i></small>
+                  </th>
+                  <!-- <th scope="col">First Name</th>
+                  <th scope="col">Middle Name</th>
+                  <th scope="col">Last Name</th> -->
+                  <th scope="col">Role</th>
+                  <th scope="col">Request Status</th>
+                  <th scope="col">Date Requested</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for request in request_details %}
+                <tr class="table-row-height">
+                  <td>{{ request.acc_request_id }}</td>
+                  <td><b>{{ request.user_role }}</b> <br>{{ request.user_first_name}} {{ request.user_middle_name}} {{ request.user_last_name}}</td>
+                  <td>{{ request.first_name}}, {{ request.middle_name}}, {{ request.last_name}}</td>
+                  <!-- <td>{{ request.first_name}}</td>
+                  <td>{{ request.middle_name}}</td>
+                  <td>{{ request.last_name}}</td> -->
+                  <td>{{ request.role }}</td>
+                  <td>{{ request.request_status }}</td>
+                  <td>{{ request.request_date }}</td>
+                  <td> <!-- TEMPORARY, added by Raph-->
+                    <button class="btn btn-success btn-sm accept-btn" data-log-id="{{ log.id }}">
+                        <i class="fas fa-check"></i> Accept
+                      </button>
+                      <button class="btn btn-danger btn-sm reject-btn" data-log-id="{{ log.id }}">
+                        <i class="fas fa-times"></i> Reject
+                      </button>
+                  </td>
+                </tr>
+                {% endfor %}                    
+              </tbody>
+          </table>
+
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end" id="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!-- Dynamic Page Numbers Will Be Injected Here -->
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+  </div>
+</div>
+
+<script src="{% static 'js/pagination.js' %}"></script>
+
+{% endblock %}

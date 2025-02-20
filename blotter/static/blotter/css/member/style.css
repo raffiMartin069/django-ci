@@ -1,0 +1,201 @@
+* {
+    font-family: var(--bs-font-sans-serif);
+}
+
+header.navbar,
+nav.navbar {
+    background-color: var(--bs-danger-text-emphasis);
+    font-weight: 500;
+    /* position: sticky;
+    top: 0;
+    z-index: 9999; */
+}
+
+.navbar-brand:hover {
+    color: var(--bs-white) !important;
+}
+
+.user,
+.user-type {
+    text-align: end;
+}
+
+.user-type {
+    font-size: small;
+}
+
+.nav-link,
+.navbar-brand,
+.navbar-text {
+    color: var(--bs-white); 
+}
+
+.nav-link {
+    color: var(--bs-white);
+    position: relative;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--bs-white) !important;;
+    border-bottom: 2px solid var(--bs-white);
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+}
+
+.navbar-toggler:focus, 
+.navbar-toggler:active {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+/* Case */
+
+hr {
+    border: 1px solid var(--bs-black);
+}
+
+.form-floating .form-control,
+.form-check-input,
+.form-select,
+.search-bar {
+    border: 2px solid black;
+    border-radius: 24px;
+}
+
+.form-floating label {
+    font-size: 14px;
+    color: gray;
+}
+
+.form-floating .form-control:focus,
+.form-check-input:focus,
+.form-select:focus,
+.search-bar:focus {
+    border-color: var(--bs-danger-text-emphasis);
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+    outline: none;
+}
+
+.form-check-input:checked {
+    background-color: var(--bs-danger-text-emphasis);
+    border-color: var(--bs-danger-text-emphasis);
+}
+
+.btn {
+    font-weight: 400;
+    padding-inline: 20px;
+}
+
+.button-container {
+    position: absolute;
+    right: 20px; 
+    display: flex;
+    gap: 10px;
+}
+
+.btn-clear,
+.btn-save,
+.btn-update,
+.btn-forms,
+.btn-information,
+.btn-update-info,
+.btn-upload,
+.btn-image,
+.btn-remove,
+.btn-cancel {
+    padding-inline: 20px;
+    border-radius: 18px;
+}
+
+.btn-clear,
+.btn-cancel {
+    background-color: var(--bs-light);
+    color: var(--bs-black);
+    border: 2px solid transparent;
+}
+
+.btn-save,
+.btn-update,
+.btn-forms,
+.btn-information,
+.btn-update-info,
+.btn-upload,
+.btn-image,
+.btn-remove {
+    background-color: var(--bs-danger-text-emphasis);
+    color: var(--bs-white);
+    border: 2px solid var(--bs-danger-text-emphasis);
+}
+
+.btn-clear:hover,
+.btn-cancel:hover {
+    border: 2px solid var(--bs-danger-text-emphasis);
+    color: var(--bs-danger-text-emphasis);
+}
+
+.btn-save:hover,
+.btn-update:hover,
+.btn-forms:hover,
+.btn-information:hover,
+.btn-update-info:hover,
+.btn-upload:hover,
+.btn-image:hover,
+.btn-remove:hover {
+    background-color: transparent;
+    border: 2px solid var(--bs-danger-text-emphasis);
+    color: var(--bs-danger-text-emphasis);
+}
+
+.table thead {
+    border: 2px solid;
+}
+
+.table-row-height {
+    height: 60px;
+    vertical-align: middle;
+}
+
+.page-link {
+    color: var(--bs-danger-text-emphasis); 
+    background-color: none; 
+    border-color: var(--bs-danger-text-emphasis); 
+}
+
+.page-link:hover {
+    color: var(--bs-white);
+    background-color: var(--bs-danger-text-emphasis); 
+    border-color: var(--bs-danger-text-emphasis);
+}
+
+.page-item.active .page-link {
+    background-color: var(--bs-danger-text-emphasis); 
+    border-color: var(--bs-danger-text-emphasis); 
+}
+
+.page-item.active .page-link:hover {
+    background-color: var(--bs-danger-text-emphasis); 
+    border-color: var(--bs-danger-text-emphasis);
+}
+
+.page-link span {
+    color: var(--bs-danger-text-emphasis); 
+}
+
+.page-link:hover span {
+    color: var(--bs-white); 
+}
+
+.page-link:focus {
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.7); 
+    transform: translateY(1px);
+}

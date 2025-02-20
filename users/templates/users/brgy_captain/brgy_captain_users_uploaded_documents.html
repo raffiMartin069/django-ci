@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-5.3.3/css/bootstrap.min.css' %}">
+    <link href="{% static 'vendor/fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/brgy_captain_user/style.css' %}">
+  
+    <script src="{% static 'vendor/fontawesomefree/js/all.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js' %}"></script>
+    <title>Uploaded Documents</title>
+</head>
+<body>
+    <div class="mt-2 mb-2 mx-2">
+        <a href="{% url 'brgycaptainlupontagapamayapa' %}" id="forms" name="forms" class="btn btn-forms">
+          <i class="fa-solid fa-arrow-left"></i>
+        </a> 
+      </div> 
+    <div class="container-fluid">
+        <h2 class="mt-2">Documents</h2>
+        <h6 id="case_folder_name" name="case_folder_name" class="case_folder_name mt-2">BC#24-02-001 ABAQUITA, MARY JANE NAVARRETE vs. ABAQUITA, MARY JANE NAVARRETE</h6>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-lg-12">
+              <div class="row g-2 align-items-center mb-3">        
+                <!-- Search Bar -->
+                <div class="col-6 position-relative">
+                  <input type="text" id="search" class="form-control search-bar pe-5" placeholder="Search...">
+                  <i class="fa-solid fa-magnifying-glass position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"></i>
+                </div>
+    
+                <!-- Information Button -->
+                <div class="col-2 d-flex align-items-center">
+                  <button type="button" id="info" name="info" class="btn btn-information" data-bs-toggle="modal" data-bs-target="#information">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                  </button>
+                </div>
+              </div>
+    
+              <div class="mb-5">
+                <table class="table" id="documentsTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Document</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <td>KP Form No. 1 – NOTICE TO CONSTITUTE THE LUPON</td>
+                        <td>No File Uploaded / File Uploaded</td>
+                        <td>
+                            <div class="button-table-container col-lg-12 col-md-8 col-sm-10 justify-content-start">
+                                <button type="button" class="btn btn-image" data-bs-toggle="modal" data-bs-target="#image_uploaded">
+                                    <i class="fa-solid fa-images"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Show Image Modal -->
+    <div class="modal fade" id="image_uploaded" tabindex="-1" aria-labelledby="image_uploaded" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Document Uploaded</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Information Modal -->
+    <div class="modal fade" id="information" tabindex="-1" aria-labelledby="information" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Case Information</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="" enctype="" method="post">
+              {% csrf_token %}
+                <div class="form-floating mb-3">
+                  {{ form.date_filed }}
+                    <label for="date_filed">Date Filed</label>
+                </div>
+                <div class="form-floating mb-3">
+                  {{ form.case_num }}
+                    <label for="case_num">Case Number</label>
+                </div>
+                <div class="form-floating mb-3">
+                  {{ form.complainant }}
+                    <label for="complainant">Complainant</label>
+                </div>
+                <div class="form-floating mb-3">
+                  {{ form.respondent }}
+                    <label for="respondent">Respondent</label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label d-block">Case Type</label>
+                    {% for radio in form.case_type %}
+                        <div class="form-check form-check-inline">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>                 
+                <div class="mb-3">
+                    <label for="case_filed" class="form-label">Case File</label>
+                    {{ form.case_filed }}
+                </div>
+                <div class="mb-3">
+                    <label for="case_status" class="form-label">Case Status</label>
+                    {{ form.case_status }}
+                </div>  
+                <div class="form-floating mb-3">
+                  {{ form.date_settled }}
+                    <label for="date_settled">Date Settled</label>
+                </div>   
+                <div class="form-floating mb-3">
+                  {{ form.time_settled }}
+                    <label for="time_settled">Time Settled</label>
+                </div>            
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

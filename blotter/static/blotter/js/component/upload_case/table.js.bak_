@@ -1,0 +1,80 @@
+export function addDocumentRow() {
+    // Get the selected document from the dropdown
+    const select = document.getElementById('case_type');
+
+    if (select === null || select === undefined) {
+        console.error("The select element is not found on the page");
+        return;
+    }
+
+    select.addEventListener('change', () => {
+        const selectedValue = select.value;
+
+        // Check if the user has selected a valid option
+        if (selectedValue) {
+            // Reference the table body
+            const tableBody = document.getElementById('documentsTableBody');
+
+            if (tableBody === null || tableBody === undefined) {
+                console.error("The table body is not found on the page");
+                return;
+            }
+
+            // Create a new row
+            const newRow = document.createElement('tr');
+
+            if (newRow === null || newRow === undefined) {
+                console.error("The new row could not be created");
+                return;
+            }
+            newRow.classList.add('table-row-height');
+
+            // Add the cells
+            newRow.innerHTML = `
+            <td>${selectedValue}</td>
+            <td>
+            <form>
+                <button type="button" class="btn btn-upload" data-bs-toggle="modal" data-bs-target="#upload_kp_form_modal">Upload</button>
+            </form>
+            </td>
+            <td>No File Uploaded / File Uploaded</td>
+            <td>
+                <div class="button-table-container col-lg-12 col-md-8 col-sm-10 justify-content-start">
+                    <button type="button" class="btn btn-image" data-bs-toggle="modal" data-bs-target="#image_uploaded">
+                        <i class="fa-solid fa-images"></i>
+                    </button>
+                    <button type="button" class="btn btn-remove" data-bs-toggle="modal" data-bs-target="#remove">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+            // Append the new row to the table body
+            tableBody.appendChild(newRow);
+            const doc_type = document.getElementById('case_type');
+
+            if (doc_type === null || doc_type === undefined) {
+                console.error("The doc_type element is not found on the page");
+                return;
+            }
+
+            const docTypeText = doc_type.options[doc_type.selectedIndex].text;
+
+            if (docTypeText === null || docTypeText === undefined) {
+                console.error("The docTypeText element is not found on the page");
+                return;
+            }
+
+            const formName = document.getElementById('form_name');
+
+            if (formName === null || formName === undefined) {
+                console.error("The formName element is not found on the page");
+                return;
+            }
+
+            formName.value = docTypeText;
+            select.value = '';
+        }
+    })
+
+}

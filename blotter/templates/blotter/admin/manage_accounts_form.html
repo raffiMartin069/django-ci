@@ -1,0 +1,240 @@
+{% extends "shared/navigation_bar.html" %}
+{% load static %}
+
+{% block title %}
+    Manage Accounts - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" data-page="manage_account">
+        <h2 class="mt-2">Lupon Tagapamayapa</h2>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row g-2 align-items-center mb-3">
+                    <!-- Search Bar -->
+                    <form method="get" action="{% url 'blotter:find_account' %}" class="col-12 position-relative">
+                        {{ search_form.search }}
+                        <i class="fa-solid fa-magnifying-glass position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"></i>
+                    </form>
+                </div>
+
+                {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                            <div id="messages" class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="mb-5">
+                    <table id="table" class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Full Name</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if all_accounts %}
+                            {% for account in all_accounts %}
+
+                                <tr class="table-row-height">
+                                    <td>{{ account.1 }} {{ account.2 }} {{ account.3 }}</td>
+                                    <td>
+                                        <div class="button-table-container col-lg-12 col-md-8 col-sm-10 justify-content-start">
+                                            <button
+                                                    type="button"
+                                                    id="info"
+                                                    name="info"
+                                                    class="btn btn-info-res info_btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#information"
+                                                    data-first_name="{{ account.1 }}"
+                                                    data-middle_name="{{ account.2 }}"
+                                                    data-last_name="{{ account.3 }}"
+                                                    data-is_active="{{ account.6 }}"
+                                                    data-username="{{ account.5 }}"
+                                                    data-role_name="{{ account.7 }}">
+                                                <i class="fa-solid fa-circle-exclamation"></i>
+                                            </button>
+                                            <button
+                                                    type="button"
+                                                    id="update"
+                                                    name="update"
+                                                    class="btn btn-update-res update_btn"
+                                                    data-bs-toggle="modal" data-bs-target="#update_info"
+                                                    data-first_name="{{ account.1 }}"
+                                                    data-middle_name="{{ account.2 }}"
+                                                    data-last_name="{{ account.3 }}"
+                                                    data-is_active="{{ account.6 }}"
+                                                    data-username="{{ account.5 }}"
+                                                    data-user_key="{{ account.0 }}"
+                                                    data-role_name="{{ account.7 }}">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="2" class="text-center">No records found.</td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end" id="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <!-- Dynamic Page Numbers Will Be Injected Here -->
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Modal -->
+    <div class="modal fade" id="information" tabindex="-1" aria-labelledby="information" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Account Information</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            {{ form1.info_fname }}
+                            <label for="info_fname">First Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form1.info_mname }}
+                            <label for="info_mname">Middle Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form1.info_lname }}
+                            <label for="info_lname">Last Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form1.info_username }}
+                            <label for="info_username">Username</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form1.info_pass }}
+                            <label for="info_pass">Password</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form1.info_cpass }}
+                            <label for="info_cpass">Confirm Password</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form1.account_roles }}
+                            <label for="info_account_roles">Role</label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label d-block">Account Status</label>
+                            {% for radio in form1.account_status %}
+                                <div class="form-check form-check-inline">
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}"
+                                           class="form-check-label">{{ radio.choice_label }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Modal -->
+    <div class="modal fade" id="update_info" tabindex="-1" aria-labelledby="update_info" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Update Account Information</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'blotter:update_managed_account' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            {{ form2.info_fname }}
+                            <label for="info_fname">First Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.info_name.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form2.info_mname }}
+                            <label for="info_mname">Middle Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.info_mname.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form2.info_lname }}
+                            <label for="info_lname">Last Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.info_lname.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form2.info_username }}
+                            <label for="info_username">Username</label>
+                        </div>
+                        <small class='text-danger'>{{ form.info_username.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form2.info_pass }}
+                            <label for="info_pass">Password</label>
+                        </div>
+                        <small class='text-danger'>{{ form.info_pass.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form2.info_cpass }}
+                            <label for="info_cpass">Confirm Password</label>
+                        </div>
+                        <small class='text-danger'>{{ form.info_cpass.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form2.account_roles }}
+                            <label for="update_account_roles">Role</label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label d-block">Account Status</label>
+                            {% for radio in form2.account_status %}
+                                <div class="form-check form-check-inline">
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}"
+                                           class="form-check-label">{{ radio.choice_label }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form2.account_id }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="clear" name="clear" class="btn btn-clear">Clear</button>
+                            <button type="submit" id="update" name="update" class="btn btn-update">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script defer type='module' src="{% static 'blotter/js/index.js' %}"></script>
+    <script src="{% static 'js/pagination.js' %}"></script>
+{% endblock %}

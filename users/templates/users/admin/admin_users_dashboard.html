@@ -1,0 +1,318 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-5.3.3/css/bootstrap.min.css' %}">
+    <link href="{% static 'vendor/fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/admin_user/style.css' %}">
+
+    <!-- temporarily added -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <script src="{% static 'vendor/fontawesomefree/js/all.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+    <title>Barangay Sto. Nino</title>
+
+    <link rel="stylesheet" href="{% static 'css/admin/style.css' %}">
+    
+    <!-- <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-5.3.3/css/bootstrap.min.css' %}">
+    <link href="{% static 'vendor/fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/admin/style.css' %}">
+
+    <script src="{% static 'vendor/fontawesomefree/js/all.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js' %}"></script> -->
+</head>
+<div>
+    <header class="navbar navbar-expand-lg">
+        <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <!-- <button type="button" id="logout" name="logout" class="btn btn-logout"> -->
+                    <div>
+                        <img src="{% static 'images/lupon_logo.png' %}" alt="Logo" class="img-fluid" style="max-height: 50px;">
+                    </div>
+                <button type="button" id="goto-dashboard" name="goto-dashboard" class="btn btn-dashboard">
+                    <i class="fa-solid fa-house" style="color: white;"></i>
+                </button>
+                <span class="navbar-brand">Barangay Sto. Niño</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <!-- ADDED BY RAPH -->
+                <div class="d-flex align-items-center gap-2">
+                    <div class="user text-end">
+                        <span class="navbar-text">{{ full_name }}</span>
+                    </div>
+                    <span class="navbar-text d-none d-sm-inline">-</span>
+                    <div class="user-type text-end">
+                        <span class="navbar-text">{{ user_role }}</span>
+                    </div>
+                </div>
+                <!--                <div class="row align-items-center">
+
+                    <a href="{% url 'add_new_role_account' %}" id="forms" name="forms" class="btn btn-redirect mb-3">
+                        Manage Accounts
+                    </a>
+                    <a href="{% url 'residents_secretary' %}" id="forms" name="forms" class="btn btn-redirect mb-3">
+                        Residents
+                    </a>
+                    <a href="{% url 'blotter:home_admin' %}" id="forms" name="forms" class="btn btn-redirect mb-3">
+                        Lupon Tagapamayapa Admin
+                    </a>
+                    <a href="{% url 'lupon_secretary' %}" id="forms" name="forms" class="btn btn-redirect mb-3">
+                        Lupon Tagapamayapa Member
+                    </a>
+                </div> -->
+                <button type="button" id="logout" name="logout" class="btn btn-logout">
+                    <i class="fa-solid fa-right-from-bracket fa-lg" style="color: white;" title="Logout"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Lupon President granted temporary access for this feature -->
+                    {% if user_role == "Admin" or user_role == "Super Admin"%}
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admindashboardstats' %}active{% endif %}"
+                           href="{% url 'admindashboardstats' %}">Dashboard</a>
+                    </li>
+                    {% endif %}
+                    {% if user_role == "Lupon President" or user_role == "Barangay Secretary" %}
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'lupon_president_dashboard' %}active{% endif %}"
+                           href="{% url 'lupon_president_dashboard' %}">Dashboard</a>
+                    </li>
+                    {% endif %}
+                    <!-- Lupon President granted temporary access for this feature -->
+                    {% if user_role == "Admin" or user_role == "Super Admin" or user_role == "Lupon President" or user_role == "Barangay Secretary" %}
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'manage_role_account' %}active{% endif %}" href="{% url 'manage_role_account' %}">Account Management</a>
+                    </li>
+                    {% endif %}
+
+                    <!-- {% if user_role != "Lupon President" %}
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'residents_secretary' %}active{% endif %}" href="{% url 'residents_secretary' %}">Resident Files</a>
+                    </li>
+                    {% endif %} -->
+
+                    <!-- {% if user_role == "Barangay Secretary" %}
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'lupon_president_dashboard' %}active{% endif %}"
+                           href="{% url 'lupon_president_dashboard' %}">Lupon Tagapamayapa</a>
+                    </li>
+                    {% endif %} -->
+                    <!-- Modified by Raph-->   
+                    <!-- <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'blotter:home_admin' %}active{% endif %}" href="{% url 'blotter:home_admin' %}">Lupon Tagapamayapa Admin</a>
+                    </li> -->
+                    {% if user_role == "Lupon President" or user_role == "Barangay Secretary"  %}
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'blotter:home_admin' %}active{% endif %}" href="{% url 'blotter:home_member' %}">Lupon Tagapamayapa</a>
+                    </li>
+                    {% endif %}
+
+                    {% if user_role == "Admin" or user_role == "Super Admin" %}
+                    <!-- Soon  -->
+                    <!-- <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'account_requests' %}active{% endif %}" href="{% url 'account_requests' %}">Account Requests</a>
+                    </li>  -->
+                    {% endif %}
+
+                    {% if user_role != "Admin" or user_role != "Lupon President" or user_role != "Barangay Secretary" %}
+                    <!-- <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'request_account' %}active{% endif %}" href="{% url 'request_account' %}">Request Account Creation</a>
+                    </li>  -->
+                    {% endif %}
+
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'audit_logs' %}active{% endif %}" href="{% url 'audit_logs' %}">Audit Logs</a>
+                    </li>
+
+                    <!-- Raf's version-->
+                    <!-- <a href="{% url 'blotter:home_admin' %}" id="forms" name="forms" class="btn btn-redirect mb-3">
+                        Lupon Tagapamayapa Admin
+                    </a>
+                    <a href="{% url 'lupon_secretary' %}" id="forms" name="forms" class="btn btn-redirect mb-3">
+                        Lupon Tagapamayapa Member
+                    </a> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<main class="">
+    {% block content %}
+        <!-- Default content can go here -->
+    {% endblock %}
+</main>
+
+<!-- TO BE MOVED-->
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const acceptButtons = document.querySelectorAll('.accept-btn');
+
+        acceptButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');  // Get parent table row
+                const requestId = row.children[0].textContent.trim().replace(/\s+/g, ''); // Remove spaces
+                const fullName = row.children[2].textContent.trim();
+
+                // 🔴 **Split by commas and trim spaces**
+                let nameParts = fullName.split(',').map(part => part.trim());
+
+                let firstName = nameParts[0] || '';  // First part = First Name
+                let middleName = nameParts[1] || ''; // Second part = Middle Name (if exists)
+                let lastName = nameParts[2] || '';   // Third part = Last Name (if exists)
+
+                const role = row.children[3].textContent.trim();
+
+                // 🔴 **Remove any invalid characters from names**
+                const cleanName = name => name.replace(/[^A-Za-z\s]/g, '').trim();
+                firstName = cleanName(firstName);
+                middleName = cleanName(middleName);
+                lastName = cleanName(lastName);
+
+                console.log(`Request ID: ${requestId}`);
+                console.log(`First Name: ${firstName}`);
+                console.log(`Middle Name: ${middleName}`);
+                console.log(`Last Name: ${lastName}`);
+                console.log(`Role: ${role}`);
+
+                // **Validation Before Sending**
+                const namePattern = /^[A-Za-z ]+$/;
+
+                if (!namePattern.test(firstName)) {
+                    alert("Invalid First Name. Only letters and spaces are allowed.");
+                    return;
+                }
+
+                if (middleName && !namePattern.test(middleName)) {
+                    alert("Invalid Middle Name. Only letters and spaces are allowed.");
+                    return;
+                }
+
+                if (!namePattern.test(lastName)) {
+                    alert("Invalid Last Name. Only letters and spaces are allowed.");
+                    return;
+                }
+
+                // Prepare the POST data
+                const formData = new FormData();
+                formData.append('account_request_id', requestId);
+                formData.append('fname', firstName);
+                formData.append('mname', middleName);
+                formData.append('lname', lastName);
+                formData.append('role', role);
+
+                fetch("{% url 'accept_add_user_account' %}", {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': getCSRFToken(),
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server Response:", data);
+                    if (data.status === 'success') {
+                        alert('User added successfully.');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An unexpected error occurred.');
+                });
+            });
+        });
+
+        function getCSRFToken() {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith('csrftoken=')) {
+                        cookieValue = cookie.substring('csrftoken='.length, cookie.length);
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const rejectButtons = document.querySelectorAll('.reject-btn');
+
+        rejectButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');  // Get parent table row
+                const requestId = row.children[0].textContent.trim().replace(/\s+/g, ''); // Remove spaces
+
+                console.log(`Rejecting Request ID: ${requestId}`);
+
+                // Prepare the POST data
+                const formData = new FormData();
+                formData.append('account_request_id', requestId);
+
+                fetch("{% url 'reject_add_user_account' %}", {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': getCSRFToken(),
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server Response:", data); // Log the server response
+                    if (data.status === 'success') {
+                        alert('User request rejected successfully.');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An unexpected error occurred.');
+                });
+            });
+        });
+
+        function getCSRFToken() {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith('csrftoken=')) {
+                        cookieValue = cookie.substring('csrftoken='.length, cookie.length);
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+    
+    </script>
+    
+<script src="{% static 'js/common.js' %}"></script>
+</html>

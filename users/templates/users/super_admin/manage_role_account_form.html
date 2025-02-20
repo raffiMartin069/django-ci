@@ -1,0 +1,183 @@
+{% extends "super_admin/super_admin_users_navbar.html" %}
+{% load static%}
+
+{% block title %}
+Manage Accounts - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mt-2">Barangay Staff</h2>
+    <hr class="my-3">
+    <div class="row">
+        <div class="col-lg-12">
+          <div class="row g-2 align-items-center mb-3">        
+            <!-- Search Bar -->
+            <div class="col-12 position-relative">
+                <input type="text" id="search" class="form-control search-bar pe-5" placeholder="Search...">
+                <i class="fa-solid fa-magnifying-glass position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"></i>
+            </div>
+          </div>
+
+          {% if messages %}
+          <div>
+              {% for message in messages %}
+                  <div id="messages" class="alert alert-{{ message.tags }}">
+                      {{ message }}
+                  </div>
+              {% endfor %}
+          </div>
+          {% endif %}
+
+          <div class="mb-5">
+            <div class="table-responsive">
+<table id="table" class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Full Name</th>
+                      <th scope="col">Role</th>
+                      <th scope="col">Username</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for user in users_details %}
+                    <tr class="table-row-height">
+                      <td>{{user.first_name}} {{user.last_name}}</td>
+                      <td>{{user.role_name}}</td>
+                      <td>{{user.username}}</td>
+                      <td>
+                        <div class="button-table-container col-lg-12 col-md-8 col-sm-10 justify-content-start">
+                          <!-- <button type="button" id="info" name="info" class="btn btn-info-res" data-bs-toggle="modal" data-bs-target="#information">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                          </button> -->
+                          <button type="button" id="update" name="update" class="btn btn-update-res" title="Update Information" data-bs-toggle="modal" data-bs-target="#update_info"
+                            data-user-id="{{ user.user_id }}"
+                            data-user-firstname="{{ user.first_name }}"
+                            data-user-middlename="{{ user.middle_name }}"
+                            data-user-lastname="{{ user.last_name }}"
+                            data-user-role_name="{{ user.role_name }}"
+                            data-user-username="{{ user.username }}"
+                            data-user-account_status="{{ user.account_status }}">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                          </button>
+                          <!-- <button type="button" id="reset_pass" name="reset_pass" class="btn btn-reset-res" data-bs-toggle="modal" data-bs-target="#reset_password">
+                            <i class="fa-solid fa-gear"></i>
+                          </button> -->
+
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %}                   
+                  </tbody>
+              </table>
+            </div>
+              
+
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end" id="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <!-- Dynamic Page Numbers Will Be Injected Here -->
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+              </nav>
+          </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade" id="update_info" tabindex="-1" aria-labelledby="update_info" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">  
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Update Account Information</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'update_user' %}" method="post" id="updateUserForm" name="updateUserForm">
+                {% csrf_token %}
+                <input type="hidden" id="update_user_id" name="update_user_id">
+                <div class="form-floating mb-3">
+                    {{ form2.fname }}
+                    <label for="fname">First Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{ form2.mname }}
+                    <label for="mname">Middle Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{ form2.lname }}
+                    <label for="lname">Last Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{ form2.username }}
+                    <label for="username">Username</label>
+                </div>
+                <div class="mb-3">
+                    <label for="case_filed" class="form-label">Role</label>
+                    {{ form2.role }}
+                </div>
+                <div class="mb-3">
+                  <label for="account_status" class="form-label">Account Status</label>
+                  {{ form2.account_status }}
+              </div>
+                <div class="form-floating mb-3">
+                    {{ form2.pass_field }}
+                    <label for="pass">Password is not pre-filled for security</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{ form2.cpass_field }}
+                    <label for="cpass">Confirm Password</label>
+                </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" id="update-btn" name="update-btn" title="Save Changes" class="btn btn-update">Save Changes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Reset Modal
+<div class="modal fade" id="reset_password" tabindex="-1" aria-labelledby="reset_password" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">  
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Reset Password</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'update_user' %}" method="post" id="updateUserForm" name="updateUserForm">
+              {% csrf_token %}
+              <input type="text" id="update_user_id" name="update_user_id">
+              <div class="form-floating mb-3">
+                  {{ form2.pass_field }}
+                  <label for="pass">New Password</label>
+              </div>
+              <div class="form-floating mb-3">
+                  {{ form2.cpass_field }}
+                  <label for="cpass">Confirm Password</label>
+              </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="clear" name="clear" class="btn btn-clear">Clear</button>
+        <button type="submit" id="update-btn" name="update-btn" class="btn btn-update">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<script src="{% static 'users/js/update_user.js' %}"></script>
+<!-- <script src="{% static 'js/common.js' %}"></script> -->
+<script src="{% static 'js/pagination.js' %}"></script>
+{% endblock %}

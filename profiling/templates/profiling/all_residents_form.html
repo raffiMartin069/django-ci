@@ -1,0 +1,244 @@
+{% extends "profiling_navbar.html" %}
+{% load static %}
+
+{% block title %}
+All Residents - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+<!-- temporarily added -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<div class="container-fluid">
+    <h2 class="mt-2">All Residents</h2>
+    <hr class="my-3">
+    <div class="row">
+        <div class="col-lg-12">
+          <div class="row g-2 align-items-center mb-3">
+            <!-- Dropdown -->
+            <div class="col-4 d-flex align-items-center">
+              <i class="fa-solid fa-address-card fa-lg me-2"></i>
+                <select id="precint_num" name="precint_num" class="form-select">
+                    <option value="" disabled selected>Select Precint No.</option>
+                    <option value="0001A">0001A</option>
+                    <option value="0001B">0001B</option>
+                    <option value="0002A">0002A</option>
+                    <option value="0003A">0003A</option>
+                    <option value="0003B">0003B</option>
+                    <option value="0004A">0004A</option>
+                    <option value="0004B">0004B</option>
+                    <option value="0005A">0005A</option>
+                    <option value="0005B">0005B</option>
+                    <option value="0006A">0006A</option>
+                    <option value="0006B">0006B</option>
+                    <option value="0007A">0007A</option>
+                    <option value="0007B">0007B</option>
+                    <option value="0008A">0008A</option>
+                    <option value="0009A">0009A</option>
+                    <option value="0009P1">0009P1</option>
+                </select>
+            </div>
+        
+            <!-- Search Bar -->
+            <div class="col-6 position-relative">
+                <input type="text" id="search" class="form-control search-bar pe-5" placeholder="Search...">
+                <i class="fa-solid fa-magnifying-glass position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"></i>
+            </div>
+
+            <!-- Export Button -->
+            <div class="col-2 d-flex align-items-center">
+              <button type="button" id="download" name="download" class="btn btn-download">
+                <i class="fa-solid fa-file-arrow-down me-2"></i> Download
+            </button>
+          </div>
+          </div>
+
+          <div>
+            {% for message in messages %}
+                <div id="messages" class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+          </div>
+
+        
+          <div class="mb-5">
+              <table id="table" class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Precint No.</th>
+                      <th scope="col">Classification</th>
+                      <th scope="col">Full Name</th>
+                      <th scope="col">Street</th>
+                      <th scope="col">Purok</th>
+                      <th scope="col">Barangay</th>
+                      <th scope="col">City</th>
+                      {% if user_role == "Admin" or user_role == "Barangay Clerk" %}
+                      <th scope="col">Action</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for resident in resident_details %}
+                    <tr class="table-row-height">
+                      <td>{{ resident.precinct_num }}</td>
+                      <td>{{ resident.category_legend }}</td>
+                      <td>{{ resident.first_name }} {{ resident.last_name }}</td>
+                      <td>{{ resident.street }}</td>
+                      <td>{{ resident.purok_sitio }}</td>
+                      <td>{{ resident.barangay }}</td>
+                      <td>{{ resident.city }}</td>
+
+                      {% if user_role == "Admin" or user_role == "Barangay Clerk"  %}
+                      <td>
+                        <div class="button-table-container col-lg-12 col-md-8 col-sm-10 justify-content-start">
+                          <!-- <button type="button" class="btn btn-info-res" data-bs-toggle="modal" data-bs-target="#information" 
+                            data-resident-id="{{ resident.resident_id }}"
+                            data-resident-firstname="{{ resident.first_name }}"
+                            data-resident-middlename="{{ resident.middle_name }}"
+                            data-resident-lastname="{{ resident.last_name }}"
+                            data-resident-street="{{ resident.street }}"
+                            data-resident-purok="{{ resident.purok_sitio }}"
+                            data-resident-precinct="{{ resident.precinct_num }}"
+                            data-resident-classification="{{ resident.category_legend }}"
+                            data-resident-status="{{ resident.resident_status }}">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                          </button> -->
+                          <button type="button" class="btn btn-update-res" data-bs-toggle="modal" data-bs-target="#update_info"
+                              data-resident-id="{{ resident.resident_id }}"
+                              data-resident-firstname="{{ resident.first_name }}"
+                              data-resident-middlename="{{ resident.middle_name }}"
+                              data-resident-lastname="{{ resident.last_name }}"
+                              data-resident-street="{{ resident.street }}"
+                              data-resident-purok="{{ resident.purok_sitio }}"
+                              data-resident-precinct="{{ resident.precinct_num }}"
+                              data-resident-classification="{{ resident.category_legend }}"
+                              data-resident-status="{{ resident.resident_status }}">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                          </button>
+                        </div>
+                      </td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                  
+              </table>
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end" id="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <!-- Dynamic Page Numbers Will Be Injected Here -->
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+              </nav>
+          </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade" id="update_info" tabindex="-1" aria-labelledby="update_info" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Update Resident Information</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="updateResidentForm" method="POST" action="{% url 'update_resident' %}">
+          {% csrf_token %}
+          <input type="hidden" id="update_resident_id" name="update_resident_id">
+          <div class="form-floating mb-3">
+              <input type="text" id="update_fname" name="update_fname" class="form-control bg-light" placeholder="First Name">
+              <label for="update_fname">First Name</label>
+          </div>
+          <div class="form-floating mb-3">
+              <input type="text" id="update_mname" name="update_mname" class="form-control bg-light" placeholder="Middle Name">
+              <label for="update_mname">Middle Name</label>
+          </div>
+          <div class="form-floating mb-3">
+              <input type="text" id="update_lname" name="update_lname" class="form-control bg-light" placeholder="Last Name">
+              <label for="update_lname">Last Name</label>
+          </div>
+          <div class="form-floating mb-3">
+              <input type="text" id="update_street" name="update_street" class="form-control bg-light" placeholder="Street">
+              <label for="update_street">Street</label>
+          </div> 
+          <div class="form-floating mb-3">
+              <input type="text" id="update_purok" name="update_purok" class="form-control bg-light" placeholder="Purok">
+              <label for="update_purok">Purok</label>
+          </div>                    
+          <div class="mb-3">
+              <label for="update_precint_num" class="form-label">Precinct No.</label>
+              <select id="update_precint_num" name="update_precint_num" class="form-select">
+                  <option value="" disabled selected>Select Precint No.</option>
+                  <option value="0001A">0001A</option>
+                  <option value="0001B">0001B</option>
+                  <option value="0002A">0002A</option>
+                  <option value="0003A">0003A</option>
+                  <option value="0003B">0003B</option>
+                  <option value="0004A">0004A</option>
+                  <option value="0004B">0004B</option>
+                  <option value="0005A">0005A</option>
+                  <option value="0005B">0005B</option>
+                  <option value="0006A">0006A</option>
+                  <option value="0006B">0006B</option>
+                  <option value="0007A">0007A</option>
+                  <option value="0007B">0007B</option>
+                  <option value="0008A">0008A</option>
+                  <option value="0009A">0009A</option>
+                  <option value="0009P1">0009P1</option>
+              </select>
+          </div>
+          <div class="mb-3">
+              <label for="update_classification" class="form-label">Classification</label>
+              <select id="update_classification" name="update_classification" class="form-select">
+                  <option value="" disabled selected>Select Classification</option>
+                  <option value="* - 18-30">* - 18-30</option>
+                  <option value="A - Illiterate">A - Illiterate</option>
+                  <option value="B - PWD">B - PWD</option>
+                  <option value="C - Senior Citizen">C - Senior Citizen</option>
+                  <option value="*A - 18-30 Illiterate">*A - 18-30 and Illiterate</option>
+                  <option value="*B - 18-30 PWD">*B - 18-30 and PWD</option>
+                  <option value="*AB - 18-30 Illiterate PWD">*AB - 18-30, Illiterate, and PWD</option>
+                  <option value="AB - Illiterate PWD">AB - Illiterate and PWD</option>
+                  <option value="AC - Illiterate Senior Citizen">AC - Illiterate and Senior Citizen</option>
+                  <option value="BC - PWD Senior Citizen">BC - PWD and Senior Citizen</option>
+              </select>
+          </div> 
+          <div class="mb-3">
+              <label for="update_status_label" class="form-label">Resident Status</label>
+              <select id="update_status" name="update_status" class="form-select">
+                  <option value="" disabled selected>Select Resident Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Changed Location">Changed Location</option>
+                  <option value="Deceased">Deceased</option>
+                  <option value="Inactive">Inactive</option>
+                  <option value="Migrated">Migrated</option>
+              </select>
+          </div>  
+          <!-- <button type="submit" class="btn btn-primary">Save Changes</button>               -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="clear" name="clear" class="btn btn-clear">Clear</button>
+        <button type="submit" id="update-btn" name="update-btn" class="btn btn-update">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'profiling/js/all_resident_form.js' %}"></script>
+<script src="{% static 'profiling/js/update_resident.js' %}"></script>
+<script src="{% static 'js/pagination.js' %}"></script>
+
+{% endblock %}
+

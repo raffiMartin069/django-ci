@@ -1,0 +1,99 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-5.3.3/css/bootstrap.min.css' %}">
+    <link href="{% static 'vendor/fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/authentication/style.css' %}">
+
+    <script src="{% static 'vendor/fontawesomefree/js/all.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        
+        <div class="row border rounded-5 p-3 bg-white shadow box-area">
+            
+            <div class="col-md-12 right-box">
+                
+                <div class="row align-items-center">
+                    
+                    <div class="header-text mb-4 text-start mt-3 d-flex align-items-center justify-content-between">
+                        <div>
+                            <h3>Barangay Sto. Niño</h3>
+                            <h5>CommUnity</h5>
+                        </div>
+                        <div>
+                            <img src="{% static 'images/logo.png' %}" alt="Logo" class="img-fluid" style="max-height: 80px;">
+                        </div>
+                    </div>
+                    
+                    
+                    <form method="post">
+                        {% if messages %}
+                        <div>
+                            {% for message in messages %}
+                                <div id="messages" class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            {{ form.username }}
+                            <label>Username</label>
+                        </div>
+                        <div class="form-floating mb-3 position-relative">
+                            {{ form.password }}
+                            <label>Password</label>
+                            <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y me-3 p-0" 
+                                id="togglePassword" style="background: none; border: none; cursor: pointer;">
+                                <small>Show</small>
+                            </button>
+                        </div>                        
+                        <div class="input-group mb-3">
+                            <button type="submit" id="login" name="login" class="btn btn-login btn-lg w-100 fs-6">Login</button>
+                        </div>
+                    </form>
+                    
+                </div>
+
+            </div>
+        
+        </div>
+    
+    </div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('passwordField');
+
+    togglePassword.addEventListener('click', function () {
+        // Toggle the type attribute of the password field
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+
+        // Toggle the button text
+        const smallElement = this.querySelector('small');
+        smallElement.textContent = type === 'password' ? 'Show' : 'Hide';
+    });
+});
+
+</script>
+
+<script>
+    window.addEventListener("beforeunload", function () {
+        navigator.sendBeacon('/authentication/logout/');
+    });
+</script>
+
+</html>

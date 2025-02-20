@@ -1,0 +1,272 @@
+{% extends "shared/navigation_bar.html" %}
+{% load static %}
+
+{% block title %}
+    Barangay Cases - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" data-page="barangay-cases">
+        <h2 class="mt-2">Barangay Cases</h2>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row g-2 align-items-center mb-3">
+                    <!-- Dropdown -->
+                    <form method="get" action="{% url 'blotter:order_by_month_barangay_cases_admin' %}"
+                          class="col-4 d-flex align-items-center">
+                        {% csrf_token %}
+                        <i class="fa-regular fa-calendar-days fa-lg me-2"></i>
+                        {{ form.month }}
+                    </form>
+
+                    <div class="col-4 position-relative">
+                        <form action="{% url 'blotter:search_case_admin' %}" method='get'>
+                            {% csrf_token %}
+                            {{ form.search }}
+                        </form>
+                    </div>
+
+                    <!-- Dropdown -->
+                    <form method="get" action="{% url 'blotter:order_by_case_type_barangay_cases_admin' %}"
+                          class="col-4 d-flex align-items-center">
+                        {% csrf_token %}
+                        <i class="fa-solid fa-folder-open fa-lg me-2"></i>
+                        {{ form.order_by_case_type }}
+                    </form>
+                </div>
+
+                {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                            <div id="messages" class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="mb-5">
+                    <table id="table" class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Case Folder</th>
+                            <th scope="col">Added by</th>
+                            <th scope="col">Date and Time</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for case in renders.final_case_list %}
+                            <tr class="table-row-height">
+                                <td>{{ case.blotter_case_num }}</td>
+                                <td>{{ case.personnel_incharge }}</td>
+                                <td>{{ case.date_added }}</td>
+                                <td>
+                                    <div class="button-table-container col-lg-12 col-md-8 col-sm-10 justify-content-start">
+                                        <button
+                                                class="btn btn-information update-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#information"
+                                                data-case-id="{{ case.blotter_case_id }}"
+                                                data-date-filed="{{ case.date_filed }}"
+                                                data-case-num="{{ case.blotter_case_num }}"
+                                                data-complainant_fname="{{ case.complainant_fname }}"
+                                                data-complainant_mname="{{ case.complainant_mname }}"
+                                                data-complainant_lname="{{ case.complainant_lname }}"
+                                                data-respondent_fname="{{ case.respondent_fname }}"
+                                                data-respondent_mname="{{ case.respondent_mname }}"
+                                                data-respondent_lname="{{ case.respondent_lname }}"
+                                                data-case-type="{{ case.case_type_id }}"
+                                                data-case-filed="{{ case.case_id }}"
+                                                data-case-status="{{ case.blotter_status_id }}"
+                                                data-date-settled="{{ case.date_settled }}"
+                                                data-time-settled="{{ case.time_settled }}"
+                                                data-current_case_number="{{ case.blotter_case_num }}"
+                                                data-is_complainant_resident="{{ case.is_complainant_resident }}">
+                                            Update
+                                        </button>
+                                        {% if case.blotter_case_id %}
+                                            <a href="{% url 'blotter:uploaded_barangay_cases_admin' case.blotter_case_id %}"
+                                               id="forms" name="forms" class="btn btn-forms">
+                                                <i class="fa-solid fa-ellipsis"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="#" id="forms" name="forms" class="btn btn-forms">
+                                                <i class="fa-solid fa-ellipsis"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4">No cases found.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end" id="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <!-- Dynamic Page Numbers Will Be Injected Here -->
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Modal -->
+    <div class="modal fade" id="information" tabindex="-1" aria-labelledby="information" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Case Information</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'blotter:barangay_cases_admin' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            {{ form.date_filed }}
+                            <label for="date_filed">Date Filed</label>
+                        </div>
+                        <small class='text-danger'>{{ form.date_filed.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.case_num }}
+                            <label for="case_num">Case Number</label>
+                        </div>
+                        <small class='text-danger'>{{ form.case_num.errors }}</small>
+
+                        <div>
+                            <strong>
+                                <label class="form-label">Complainant</label>
+                            </strong>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {{ form.complainant_fname }}
+                            <label for="complainant_fname">Complainant First Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.complainant_fname.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.complainant_mname }}
+                            <label for="complainant_mname">Complainant Middle Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.complainant_mname.errors }}</small>
+                        <div class="form-floating mb-3">
+                            {{ form.complainant_lname }}
+                            <label for="complainant_lname">Complainant Last Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.complainant_lname.errors }}</small>
+
+                        <fieldset>
+                            <div class="mb-3">
+                                <label class="form-label d-block">Are you a Resident or Non-resident?</label>
+                                {% for radio in form.resident %}
+                                    <div class="form-check form-check-inline">
+                                        {{ radio.tag }}
+                                        <label for="{{ radio.id_for_label }}"
+                                               class="form-check-label">{{ radio.choice_label }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+
+                        <div>
+                            <strong>
+                                <label class="form-label">Respondent</label>
+                            </strong>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {{ form.respondent_fname }}
+                            <label for="respondent_fname">Respondent First Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.respondent_fname.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.respondent_mname }}
+                            <label for="respondent_mname">Respondent Middle Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.respondent_mname.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.respondent_lname }}
+                            <label for="respondent_lname">Respondent Last Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.respondent_lname.errors }}</small>
+
+                        <div class="mb-3">
+                            <label class="form-label d-block">Case Type</label>
+                            {% for radio in form.case_type %}
+                                <div class="form-check form-check-inline">
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}"
+                                           class="form-check-label">{{ radio.choice_label }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <small class='text-danger'>{{ form.radio.errors }}</small>
+
+                        <div class="mb-3">
+                            <label for="case_filed" class="form-label">Case File</label>
+                            {{ form.case_filed }}
+                        </div>
+                        <small class='text-danger'>{{ form.case_filed.errors }}</small>
+
+                        <div class="mb-3">
+                            <label for="case_status" class="form-label">Case Status</label>
+                            {{ form.case_status }}
+                        </div>
+                        <small class='text-danger'>{{ form.case_status.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.date_settled }}
+                            <label for="date_settled">Date Settled</label>
+                        </div>
+                        <small class='text-danger'>{{ form.date_settled.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.time_settled }}
+                            <label for="time_settled">Time Settled</label>
+                        </div>
+                        <small class='text-danger'>{{ form.time_settled.errors }}</small>
+                        <small class='text-danger'>{{ form.non_field_errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.current_case_number }}
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" id="update-btn" name="update" class="btn btn-update-info">Update
+                                Information
+                            </button>
+                            <button type="button" id="clear-info" name="clear" class="btn btn-clear d-none">Clear
+                            </button>
+                            <button type="submit" id="update-info" name="update" class="btn btn-update d-none">Update
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="{% static 'blotter/js/member/case_handler.js' %}"></script>
+        <script defer type='module' src="{% static 'blotter/js/index.js' %}"></script>
+        <script src="{% static 'js/pagination.js' %}"></script>
+        <script src="{% static 'js/member/update_input.js' %}"></script>
+{% endblock %}

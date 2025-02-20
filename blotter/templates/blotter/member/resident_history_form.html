@@ -1,0 +1,71 @@
+{% extends "shared/navigation_bar.html" %}
+{% load static %}
+
+{% block title %}
+    Resident History - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h2 class="mt-2">Resident History</h2>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row g-2 align-items-center mb-3">
+                    <!-- Search Bar -->
+                    <div class="col-6 position-relative">
+                        <input type="text" id="search" class="form-control search-bar pe-5" placeholder="Search...">
+                        <i class="fa-solid fa-magnifying-glass position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"></i>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <div class="table-responsive">
+                        <table id="table" class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Complainant</th>
+                                <th scope="col">Respondent</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if residents %}
+                                {% for resident in residents %}
+                                    <tr class="table-row-height">
+                                        <td>{{ resident.full_name }}</td>
+                                        <td>{{ resident.complainant_count }}</td>
+                                        <td>{{ resident.respondent }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center">No records found.</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end" id="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <!-- Dynamic Page Numbers Will Be Injected Here -->
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/pagination.js' %}"></script>
+{% endblock %}

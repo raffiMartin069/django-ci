@@ -1,0 +1,72 @@
+{% extends "profiling_navbar.html" %}
+{% load static %}
+
+{% block title %}
+Logs - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <h2 class="mt-2">System Logs</h2>    
+  <hr class="my-3">
+  <div class="row">
+      <div class="col-lg-12">
+        <div class="row g-2 align-items-center mb-3">
+          <!-- Date -->
+          <div class="col-4 align-items-center">
+            <div class="form-floating">
+                <input type="date" id="date_logs" name="date_logs" class="form-control bg-light" placeholder="Select Date">
+                <label for="date_logs">Select Date</label>
+            </div>
+        </div>
+        </div>
+
+        <div class="mb-5">
+          <table id="table" class="table">
+              <thead>
+                <tr>
+                  <th scope="col">User ID</th>
+                  <th scope="col">Full Name</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Login Time</th>
+                  <th scope="col">Logout Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in system_logs_details %}
+                <tr class="table-row-height">
+                  <td>{{ log.user_id }}</td>
+                  <td>{{ log.full_name }}</td>
+                  <td>{{ log.role_name }}</td>
+                  <td>{{ log.login_time }}</td>
+                  <td>{{ log.logout_time }}</td>
+                </tr>
+                {% endfor %}                        
+              </tbody>
+          </table>
+
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end" id="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!-- Dynamic Page Numbers Will Be Injected Here -->
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+<script src="{% static 'profiling/js/all_resident_form.js' %}"></script>
+<script src="{% static 'profiling/js/update_resident.js' %}"></script>
+<script src="{% static 'js/pagination.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-5.3.3/css/bootstrap.min.css' %}">
+    <link href="{% static 'vendor/fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/admin/style.css' %}">
+    
+    <script src="{% static 'vendor/fontawesomefree/js/all.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js' %}"></script>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header class="navbar navbar-expand-lg">
+        <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center">
+            <span class="navbar-brand">Barangay Sto. Niño</span>
+            <div class="d-flex align-items-center gap-2">
+                <div class="user text-end">
+                    <span class="navbar-text">ID: {{ request.session.user_id }} Name: {{ request.session.full_name }}</span>
+                </div>
+                <span class="navbar-text d-none d-sm-inline">-</span>
+                <div class="user-type text-end">
+                    <span class="navbar-text">Title: {{ request.session.role }}</span>
+                </div>
+                <form action="{% url 'blotter:log_out' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" id="logout" name="logout" class="btn btn-logout">
+                        <i class="fa-solid fa-right-from-bracket fa-lg" style="color: white;"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>    
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'blotter:home_admin' %}active{% endif %}" href="{% url 'blotter:home_admin' %}">Home</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'blotter:add_account_admin' %}active{% endif %}" href="{% url 'blotter:add_account_admin' %}">Add Account</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'blotter:add_new_case_member' %}active{% endif %}" href="{% url 'blotter:add_new_case_member' %}">Add New Case</a>
+                    </li>
+                    <li class="nav-item me-3" hidden="hidden" disabled="disabled">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'blotter:manage_accounts_admin' %}active{% endif %}" href="{% url 'blotter:manage_accounts_admin' %}">Manage Accounts</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'blotter:barangay_cases_admin' %}active{% endif %}" href="{% url 'blotter:barangay_cases_admin' %}">Barangay Cases</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'blotter:logs_admin' %}active{% endif %}" href="{% url 'blotter:logs_admin' %}">Logs</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'blotter:logs_member' %}active{% endif %}" href="{% url 'blotter:logs_member' %}">Request Account Creation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <noscript>
+            <div class="noscript-visible"
+                style="background-color: #ffcc00; color: black; padding: 20px; text-align: center;">
+                <strong>Warning:</strong> JavaScript is disabled in your browser. Some features of this site will not work. Please enable
+                JavaScript to continue.
+
+                <div>
+                    For instructions on how to enable JavaScript, follow official Google by clicking
+                </div>
+                <div>
+                    <a href="https://support.google.com/adsense/answer/12654?hl=en" target="_blank">How to enable JavaScript on Google Chrome</a>.
+                </div>
+            </div>
+    </noscript>
+    <main class="">
+        {% block content %}
+        <!-- Default content can go here -->
+        {% endblock %}
+    </main>
+<script src="{% static 'blotter/js/utilities/off_limits.js' %}"></script>
+<script>
+        (() => {
+            const logout = document.getElementById('logout');
+            logout.addEventListener('click', (e) => {
+                if (!confirm('Are you sure you want to log out?')) {
+                    e.preventDefault();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
+
+

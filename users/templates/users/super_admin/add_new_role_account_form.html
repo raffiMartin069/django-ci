@@ -1,0 +1,99 @@
+{% extends "super_admin/super_admin_users_navbar.html" %}
+
+{% block title %}
+Add Account - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mt-2">Add Account</h2>
+    <hr class="my-3">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <form action="{% url 'process_add_user_account' %}" enctype="multipart/form-data" method="post">
+                {% if messages %}
+                <div>
+                    {% for message in messages %}
+                        <div id="messages" class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    {{ form.fname }}
+                    <label for="fname">First Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{ form.mname }}
+                    <label for="mname">Middle Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{ form.lname }}
+                    <label for="lname">Last Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{ form.username }}
+                    <label for="username">Username</label>
+                </div>
+                <div class="mb-3">
+                    {% if user_role == "Lupon President" %}
+                    <label class="form-label"></label>
+                    {{ form.role }}
+                    {% else %}
+                    <label class="form-label"></label>
+                    {{ form.role }}
+                    {% endif %}
+                </div>
+                <div class="form-floating mb-3">
+                    {{ form.pass_field }}
+                    <label for="pass">Password</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{ form.cpass_field }}
+                    <label for="cpass">Confirm Password</label>
+                </div>
+                <div class="button-container col-lg-12 col-md-8 col-sm-10 justify-content-end mb-2">
+                    <button type="submit" id="clear" name="clear" class="btn btn-clear" title="Clear">Clear</button>
+                    <button type="submit" id="save" name="save" class="btn btn-save" title="Save">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const fnameInput = document.querySelector("[name='fname']");
+        const lnameInput = document.querySelector("[name='lname']");
+        const usernameInput = document.querySelector("[name='username']");
+        const passwordInput = document.querySelector("[name='pass_field']");
+        const confirmPasswordInput = document.querySelector("[name='cpass_field']");
+
+        function generateCredentials() {
+            let fname = fnameInput.value.trim().toLowerCase();
+            let lname = lnameInput.value.trim().toLowerCase();
+            
+            if (fname && lname) {
+                let username = fname + "." + lname + "@sto.nino"; // Corrected: No toLower() method
+                let password = fname.charAt(0).toUpperCase() + lname + "@stonino";
+
+                usernameInput.value = username;
+                passwordInput.value = password;
+                confirmPasswordInput.value = password;
+            } else {
+                usernameInput.value = "";
+                passwordInput.value = "";
+                confirmPasswordInput.value = "";
+            }
+        }
+
+        fnameInput.addEventListener("input", generateCredentials);
+        lnameInput.addEventListener("input", generateCredentials);
+    });
+</script>
+
+{% endblock %}

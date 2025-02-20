@@ -1,0 +1,81 @@
+{% extends "shared/navigation_bar.html" %}
+{% load static %}
+
+{% block title %}
+    Logs - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h2 class="mt-2">Logs</h2>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row g-2 align-items-center mb-3">
+                    <!-- Date -->
+                    <form method="get" action="{% url 'blotter:find_by_date_logs_member' %}" class="col-4 align-items-center">
+                        {% csrf_token %}
+                        <div class="form-floating">
+                            {{ date_picker.date_logs }}
+                            <label for="date_logs">Date</label>
+                        </div>
+                    </form>
+                    <form method="get" action="{% url 'blotter:search_logs' %}" class="col-4 align-items-center">
+                        {% csrf_token %}
+                        <div class="form-floating">
+                            {{ search_form.search }}
+                            <label for="search">Search...</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="mb-5">
+                    <div class="table-responsive">
+                        <table id="table" class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Case Folder</th>
+                                <th scope="col">Document</th>
+                                <th scope="col">Action</th>
+                                <th scope="col">Date and Time</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if renders %}
+                                {% for render in renders %}
+                                    <tr class="table-row-height">
+                                    <td>{{ render.case_folder }}</td>
+                                    <td>{{ render.document }}</td>
+                                    <td>{{ render.action }}</td>
+                                    <td>{{ render.date_time }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No records found.</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end" id="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <!-- Dynamic Page Numbers Will Be Injected Here -->
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/pagination.js' %}"></script>
+{% endblock %}

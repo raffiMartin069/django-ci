@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-5.3.3/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/brgy_captain_user/style.css' %}">
+
+    <script src="{% static 'vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js' %}"></script>
+    <title>Barangay Captain</title>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        
+        <div class="row border rounded-5 p-3 bg-white shadow box-area">
+            
+            <div class="col-md-12 right-box">
+                <div class="mb-4 text-center">
+                    <h3>Welcome Barangay Captain!</h3>
+                </div>
+                <div class="row align-items-center">
+                    
+                    <a href="{% url 'residents_secretary' %}" id="forms" name="forms" class="btn btn-redirect mb-3">
+                        Residents
+                    </a>
+                    <a href="{% url 'lupon_secretary' %}" id="forms" name="forms" class="btn btn-redirect mb-3">
+                        Lupon Tagapamayapa
+                    </a>
+                </div>
+
+            </div>
+        
+        </div>
+    
+    </div>
+</body>
+</html>

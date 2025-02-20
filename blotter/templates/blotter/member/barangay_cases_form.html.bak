@@ -1,0 +1,236 @@
+{% extends "member/member_navbar.html" %}
+{% load static %}
+
+{% block title %}
+Barangay Cases - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mt-2">Barangay Cases</h2>
+    <hr class="my-3">
+    <div class="row">
+        <div class="col-lg-12">
+          <div class="row g-2 align-items-center mb-3">
+            <!-- Dropdown -->
+            <div class="col-4 d-flex align-items-center">
+                <i class="fa-regular fa-calendar-days fa-lg me-2"></i>
+                <select id="month" name="month" class="form-select">
+                    <option value="" disabled selected>Select Month</option>
+                    <option value="">January</option>
+                    <option value="">February</option>
+                    <option value="">March</option>
+                    <option value="">April</option>
+                    <option value="">May</option>
+                    <option value="">June</option>
+                    <option value="">July</option>
+                    <option value="">August</option>
+                    <option value="">September</option>
+                    <option value="">October</option>
+                    <option value="">November</option>
+                    <option value="">December</option>
+                </select>
+            </div>
+        
+            <!-- Search Bar -->
+            <div class="col-4 position-relative">
+                <input type="text" id="search" class="form-control search-bar pe-5" placeholder="Search...">
+                <i class="fa-solid fa-magnifying-glass position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"></i>
+            </div>
+
+            <!-- Dropdown -->
+            <div class="col-4 d-flex align-items-center">
+                <i class="fa-solid fa-folder-open fa-lg me-2"></i>
+                <select id="case_type" name="case_type" class="form-select">
+                    <option value="" disabled selected>All Cases</option>
+                    <option value="">Civil Cases</option>
+                    <option value="">Criminal Cases</option>
+                </select>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <table id="table" class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Case Folder</th>
+                    <th scope="col">Added by</th>
+                    <th scope="col">Date and Time</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  {% comment %} <tr class="table-row-height">
+                    <td>BC#24-02-001 ABAQUITA, MARY JANE NAVARRETE vs. ABAQUITA, MARY JANE NAVARRETE</td>
+                    <td>ABAQUITA, MARY JANE NAVARRETE</td>
+                    <td>9/10/2024 9:26 PM</td>
+                    <td>
+                      <div class="button-table-container col-lg-12 col-md-8 col-sm-10 justify-content-start">
+                        <button type="button" id="info" name="info" class="btn btn-information" data-bs-toggle="modal" data-bs-target="#information">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </button>
+                        <a href="{% url 'blotter:upload_barangay_cases_member' %}" id="forms" name="forms" class="btn btn-forms">
+                          <i class="fa-solid fa-ellipsis"></i>
+                        </a>                                                            
+                      </div>
+                    </td>
+                  </tr> {% endcomment %}
+
+                  {% for i in renders.final_case_list %}
+                  <tr class="table-row-height">
+                    <td>{{ i.blotter_case_num }}</td>
+                    <td>{{ i.personnel_incharge }}</td>
+                    <td>{{ i.date_filed }}</td>
+                    {% comment %} <td>BC#24-02-001 ABAQUITA, MARY JANE NAVARRETE vs. ABAQUITA, MARY JANE NAVARRETE</td>
+                    <td>ABAQUITA, MARY JANE NAVARRETE</td>
+                    <td>9/10/2024 9:26 PM</td> {% endcomment %}
+                    <td>
+                      <div class="button-table-container col-lg-12 col-md-8 col-sm-10 justify-content-start">
+                        <button type="button" id="info-{{ forloop.counter }}" name="info" class="btn btn-information" data-bs-toggle="modal" data-bs-target="#information-{{ forloop.counter }}">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </button>
+                        <a href="{% url 'blotter:upload_barangay_cases_member' %}" id="forms" name="forms" class="btn btn-forms">
+                          <i class="fa-solid fa-ellipsis"></i>
+                        </a>                                                            
+                      </div>
+                    </td>
+                  </tr>
+                  <!-- Information Modal -->
+                  <div class="modal fade" id="information-{{ forloop.counter }}" tabindex="-1" aria-labelledby="informationLabel-{{ forloop.counter }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="informationLabel-{{ forloop.counter }}">Case Information</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="" enctype="" method="post">
+                            {% csrf_token %}
+                              <div class="form-floating mb-3">
+                                {% comment %} {{ form.date_filed }} {% endcomment %}
+                                <input type="text" class="form-control" id="date_filed-{{ forloop.counter }}" value="{{ i.date_filed }}" readonly>
+                                  <label for="date_filed">Date Filed</label>
+                              </div>
+                              <div class="form-floating mb-3">
+                                {% comment %} {{ form.case_num }} {% endcomment %}
+                                <input type="text" class="form-control" id="date_filed-{{ forloop.counter }}" value="{{ i.blotter_case_num }}" readonly>
+                                  <label for="case_num">Case Number</label>
+                              </div>
+                              <div class="form-floating mb-3">
+                                {% comment %} {{ form.complainant }} {% endcomment %}
+                                <input type="text" class="form-control" id="date_filed-{{ forloop.counter }}" value="{{ i.complainant_name }}" readonly>
+                                  <label for="complainant">Complainant</label>
+                              </div>
+                              <div class="form-floating mb-3">
+                                {% comment %} {{ form.respondent }} {% endcomment %}
+                                <input type="text" class="form-control" id="date_filed-{{ forloop.counter }}" value="{{ i.respondent_name }}">
+                                <label for="respondent">Respondent</label>
+                              </div>
+
+                            {% if i.case_type == 'Criminal Case' %}
+                              <div class="form-group mb-3">
+                                <label for="case_type">Case Type</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="case_type_1" name="case_type" value="choice1" class="form-check-input" disabled>
+                                    <label for="case_type_1" class="form-check-label">Civil Case</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="case_type_2" name="case_type" value="choice2" class="form-check-input" disabled checked>
+                                    <label for="case_type_2" class="form-check-label">Criminal Case</label>
+                                </div>
+                                
+                                <div class="invalid-feedback">Invalid case type input.</div>
+                              </div>
+                            {% else %}
+                              <div class="form-group mb-3">
+                                <label for="case_type">Case Type</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="case_type_1" name="case_type" value="choice1" class="form-check-input" disabled checked>
+                                    <label for="case_type_1" class="form-check-label">Civil Case</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="case_type_2" name="case_type" value="choice2" class="form-check-input" disabled>
+                                    <label for="case_type_2" class="form-check-label">Criminal Case</label>
+                                </div>
+                                
+                                <div class="invalid-feedback">Invalid case type input.</div>
+                              </div>
+                            {% endif %}
+
+                              {% comment %} <div class="mb-3">
+                                  <label class="form-label d-block">Case Type</label>
+                                  {% for radio in form.case_type %}
+                                      <div class="form-check form-check-inline">
+                                          {{ radio.tag }}
+                                          <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                                      </div>
+                                  {% endfor %}
+                              </div>                  {% endcomment %}
+                              
+                              {% comment %} Render case files as options {% endcomment %}
+                              
+                              <div>
+                                <select class="form-select" id="case-file-select-{{ forloop.counter }}">
+                                  {% for case_files in renders.case_file_list %}
+                                  <option value="{{ case_files.case_id }}">{{ case_files.case_name }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+
+
+                              <div class="mb-3">
+                                  <label for="case_status" class="form-label">Case Status</label>
+                                  {% comment %} {{ form.case_status }} {% endcomment %}
+                                  <input type="text" class="form-select" id="date_filed-{{ forloop.counter }}" value="{{ i.blotter_status }}">
+                              </div>  
+                              <div class="form-floating mb-3">
+                                {% comment %} {{ form.date_settled }} {% endcomment %}
+                                <input type="text" class="form-control" id="date_filed-{{ forloop.counter }}" value="{{ i.date_settled }}">
+                                  <label for="date_settled">Date Settled</label>
+                              </div>   
+                              <div class="form-floating mb-3">
+                                {% comment %} {{ form.time_settled }} {% endcomment %}
+                                <input type="text" class="form-control" id="date_filed-{{ forloop.counter }}" value="{{ i.time_settled }}">
+                                  <label for="time_settled">Time Settled</label>
+                              </div>            
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" id="update-btn" name="update" class="btn btn-update-info">Update Information</button>
+                          <button type="button" id="clear-info" name="clear" class="btn btn-clear d-none">Clear</button>
+                          <button type="submit" id="update-info" name="update" class="btn btn-update d-none">Update</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}  
+                </tbody>
+            </table>
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-end" id="pagination">
+                  <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                      </a>
+                  </li>
+                  <!-- Dynamic Page Numbers Will Be Injected Here -->
+                  <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                      </a>
+                  </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="{% static 'js/member/case_handler.js' %}"></script>
+<script src="{% static 'js/member/update_input.js' %}"></script>
+<script src="{% static 'js/pagination.js' %}"></script>
+{% endblock %}

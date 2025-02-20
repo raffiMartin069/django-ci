@@ -1,0 +1,570 @@
+{% extends "shared/navigation_bar.html" %}
+{% load static %}
+
+{% block title %}
+    Upload Documents - Barangay Sto. Niño
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'blotter/css/member/brangay-cases.css' %}" >
+    <div class="container-fluid" data-page="upload_brgy_cases">
+        <h2 class="mt-2">Documents</h2>
+        <h6 id="case_folder_name" name="case_folder_name"
+            class="case_folder_name mt-2">{{ info_data.blotter_case_number }}, {{ info_data.blotter_case_name }}</h6>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row g-2 align-items-center mb-3">
+                    <!-- Dropdown -->
+                    <div class="col-4 d-flex align-items-center">
+                        <i class="fa-solid fa-folder-open fa-lg me-2"></i>
+                        <label for="case_type"></label>
+                        <select id="case_type" name="case_type" class="form-select">
+                            <option value="" disabled selected>Select Document</option>
+
+                            <option value="1">KP Form No. 1 Image 1 – NOTICE TO
+                                CONSTITUTE THE LUPON
+                            </option>
+                            <option value="2">KP Form No. 1 Image 2 – NOTICE TO
+                                CONSTITUTE THE LUPON
+                            </option>
+
+                            <option value="3">KP Form No. 2 – APPOINTMENT LETTER
+                            </option>
+                            <option value="4">KP Form No. 3 – NOTICE OF
+                                APPOINTMENT
+                            </option>
+                            <option value="5">KP Form No. 4 – LIST OF
+                                APPOINTED LUPON MEMBERS
+                            </option>
+                            <option value="6">KP Form No. 5 – LUPON MEMBER
+                                OATH STATEMENT
+                            </option>
+
+                            <option value="7">KP Form No. 6 Image 1 – WITHDRAWAL OF
+                                APPOINTMENT
+                            </option>
+                            <option value="8">KP Form No. 6 Image 2 – WITHDRAWAL OF
+                                APPOINTMENT
+                            </option>
+
+                            <option value="9">KP Form No. 7 – COMPLAINT FORM</option>
+                            <option value="10">KP Form No. 8 – NOTICE OF HEARING</option>
+
+                            <option value="11">KP Form No. 9 Image 1 – SUMMON FOR THE
+                                RESPONDENT
+                            </option>
+                            <option value="12">KP Form No. 9 Image 2 – SUMMON FOR THE
+                                RESPONDENT
+                            </option>
+
+                            <option value="13">KP Form No. 10 – NOTICE
+                                FOR CONSTITUTION OF PANGKAT
+                            </option>
+                            <option value="14">KP Form No. 11 – NOTICE TO
+                                CHOSEN PANGKAT MEMBER
+                            </option>
+                            <option value="15">KP Form No. 12
+                                – NOTICE OF HEARING (CONCILIATION PROCEEDINGS)
+                            </option>
+                            <option value="16">KP Form No. 13 – SUBPOENA LETTER</option>
+                            <option value="17">KP Form No. 14 – AGREEMENT FOR
+                                ARBITRATION
+                            </option>
+
+                            <option value="18">KP Form No. 15 Image 1 – ARBITRATION AWARD
+                            </option>
+                            <option value="19">KP Form No. 15 Image 2 – ARBITRATION AWARD
+                            </option>
+
+                            <option value="20">KP Form No. 16 – AMICABLE SETTLEMENT
+                            </option>
+
+                            <option value="21">KP Form No. 17 Image 1 - REPUDIATION</option>
+                            <option value="22">KP Form No. 17 Image 2 - REPUDIATION</option>
+
+                            <option value="23">KP Form No. 18 – NOTICE
+                                OF HEARING FOR COMPLAINANT
+                            </option>
+
+                            <option value="24">KP Form No. 19 – NOTICE OF
+                                HEARING FOR RESPONDENT
+                            </option>
+
+                            <option value="25">KP Form
+                                No. 20 – CERTIFICATION TO FILE ACTION (FROM LUPON SECRETARY)
+                            </option>
+                            <option value="26">KP
+                                Form No. 20-A – CERTIFICATION TO FILE ACTION (FROM PANGKAT SECRETARY)
+                            </option>
+                            <option value="27">KP Form No. 20-B –
+                                CERTIFICATION TO FILE ACTION
+                            </option>
+
+                            <option value="28">KP Form No. 21 – CERTIFICATION
+                                TO BAR ACTION
+                            </option>
+
+                            <option value="29">KP Form No. 22 –
+                                CERTIFICATION TO BAR COUNTERCLAIM
+                            </option>
+
+                            <option value="30">KP Form No. 23 – MOTION FOR EXECUTION
+                            </option>
+
+                            <option value="31">KP Form No. 24
+                                – NOTICE OF HEARING (RE: MOTION FOR EXECUTION)
+                            </option>
+
+
+                            <option value="32">KP Form No. 25 Image 1 – NOTICE OF EXECUTION
+                            </option>
+                            <option value="33">KP Form No. 25 Image 2 – NOTICE OF EXECUTION
+                            </option>
+
+                            <option value="34">KP Form No. 26 –
+                                MONTHLY TRANSMITTAL OF FINAL REPORTS
+                            </option>
+
+                            <option value="35">LUPON'S BLOTTER</option>
+
+                            <option value="36">BARANGAY CASE SUMMARY</option>
+
+                            <option value="37">CASE FOLDER SUMMARY</option>
+
+                            <option value="38">MINUTES OF HEARING</option>
+
+                            <option value="39">MONITORING OF CASE</option>
+
+                            <option value="40">ACKNOWLEDGEMENT RECEIPT</option>
+
+                            <option value="41">IMAGE 1 OF MONITORING OF CASE</option>
+                            <option value="42">IMAGE 2 OF MONITORING OF CASE</option>
+                            <option value="43">IMAGE 3 OF MONITORING OF CASE</option>
+
+                            <option value="44">IMAGE 1 OF AMICABLE SETTLEMENT</option>
+                            <option value="45">IMAGE 2 OF AMICABLE SETTLEMENT</option>
+                            <option value="46">IMAGE 3 OF AMICABLE SETTLEMENT</option>
+
+                            <option value="47">IMAGE 1 OF OTHERS</option>
+                            <option value="48">IMAGE 2 OF OTHERS</option>
+                            <option value="49">IMAGE 3 OF OTHERS</option>
+                        </select>
+                    </div>
+
+                        <!-- Search Bar -->
+                        <form method="get" action="{% url 'blotter:document_search' case_data.final_case_list.0.blotter_case_id %}"
+                              class="col-6 position-relative">
+                            {{ search_form.search }}
+                            <i class="fa-solid fa-magnifying-glass position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"></i>
+                        </form>
+                    <!-- Information Button -->
+
+                    <div class="col-2 d-flex align-items-center">
+                        <button
+                                class="btn btn-information update-btn" title="Show Barangay Case Information"
+                                data-bs-toggle="modal"
+                                data-bs-target="#information"
+                                data-case-time-filed="{{ case_data.final_case_list.0.time_filed }}"
+                                data-case-id="{{ case_data.final_case_list.0.blotter_case_id }}"
+                                data-date-filed="{{ case_data.final_case_list.0.date_filed }}"
+                                data-case-num="{{ case_data.final_case_list.0.blotter_case_num }}"
+                                data-complainant_fname="{{ case_data.final_case_list.0.complainant_fname }}"
+                                data-complainant_mname="{{ case_data.final_case_list.0.complainant_mname }}"
+                                data-complainant_lname="{{ case_data.final_case_list.0.complainant_lname }}"
+                                data-respondent_fname="{{ case_data.final_case_list.0.respondent_fname }}"
+                                data-respondent_mname="{{ case_data.final_case_list.0.respondent_mname }}"
+                                data-respondent_lname="{{ case_data.final_case_list.0.respondent_lname }}"
+                                data-case-type="{{ case_data.final_case_list.0.case_type_id }}"
+                                data-case-filed="{{ case_data.final_case_list.0.case_id }}"
+                                data-case-status="{{ case_data.final_case_list.0.blotter_status_id }}"
+                                data-date-settled="{{ case_data.final_case_list.0.date_settled }}"
+                                data-time-settled="{{ case_data.final_case_list.0.time_settled }}"
+                                data-current_case_number="{{ case_data.final_case_list.0.blotter_case_num }}"
+                                data-is_complainant_resident="{{ case_data.final_case_list.0.is_complainant_resident }}">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </button>
+                    </div>
+
+                    {% if messages %}
+                        <div>
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-5">
+                        <div class="table-responsive">
+                            <table class="table" id="documentsTable">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Document</th>
+                                    <th scope="col">Upload</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody id="documentsTableBody">
+                                {% for doc in case_doc %}
+                                    <tr>
+                                        <td>{{ doc.form_type }}</td>
+                                        <td>
+                                            {% if doc %}
+                                                <button type="button" class="btn btn-update" data-doc_id="{{ doc.document_id }}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#update_kp_form_modal" title="Update Image">Update
+                                                </button>
+                                            {% else %}
+                                                <button type="button" class="btn"
+                                                        style="background: #58151c !important; color: #fcfcfd !important;" data-bs-toggle="modal"
+                                                        data-bs-target="#upload_kp_form_modal" title="Upload Image">Upload Form
+                                                </button>
+                                            {% endif %}
+    
+                                        </td>
+                                        <td>{{ doc.form_status }}</td>  <!-- Added form_status here -->
+                                        <td>
+                                            <div class="button-table-container d-flex flex-wrap gap-2">
+                                                <button type="button" class="btn btn-image" data-bs-toggle="modal"
+                                                        data-bs-target="#update{{ doc.modal_id }}" title="Preview Image">
+                                                    <i class="fa-solid fa-images"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-remove" data-bs-toggle="modal" title="Remove Document"
+                                                        data-bs-target="#remove_modal{{ doc.modal_id }}">
+                                                    <i class="fa-solid fa-circle-xmark"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+    
+                                    <!-- Show Image Modal -->
+                                    <div class="modal fade" id="update{{ doc.modal_id }}" tabindex="-1"
+                                         aria-labelledby="image_uploaded" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Document
+                                                        Uploaded</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body text-centered">
+                                                    {% if doc.form_image %}
+                                                        <img src="{{ doc.form_image }}" alt="Uploaded Document"
+                                                             class="img-fluid rounded"/>
+                                                    {% else %}
+                                                        <p>No image available.</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="{{ doc.form_image }}"
+                                                       download="{{ info_data.blotter_case_number }}-{{ doc.form_type }}.{{ doc.form_image_format }}"
+                                                       class="btn text-white custom-btn"
+                                                       style="background: #58151c; border: #58151c;" title="Download Image">
+                                                        Download Image
+                                                    </a>
+                                                    <a title="print screen" onclick="docPrinter('{{ doc.form_image }}');"
+                                                       class="btn text-white custom-btn"
+                                                       style="background: #58151c; border: #58151c;" title="Download Image">
+                                                        Print Image
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <!-- Remove Modal -->
+                                    <div class="modal fade" id="remove_modal{{ doc.modal_id }}" tabindex="-1"
+                                         aria-labelledby="remove"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Remove
+                                                        Document</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to remove this document?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form method="post"
+                                                          action="{% url 'blotter:delete_uploaded_image' case_data.final_case_list.0.blotter_case_id %}">
+                                                        {% csrf_token %}
+                                                        <label>
+                                                            <input type="password" hidden="hidden" name="form_id"
+                                                                   id="form_id{{ doc.modal_id }}" value="{{ doc.document_id }}" readonly>
+                                                        </label>
+                                                        <button type="submit" id="remove{{ doc.modal_id }}" name="remove"
+                                                                class="btn btn-remove" title="Remove Document">Remove
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="image_uploaded" tabindex="-1"
+         aria-labelledby="image_uploaded" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Document
+                        Uploaded</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% if doc.form_image %}
+                        <img src="{{ doc.form_image }}" alt="Uploaded Document"
+                             class="img-fluid rounded"/>
+                    {% else %}
+                        <p>No image available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" tabindex="-1" id="upload_kp_form_modal" name="upload_kp_form_modal"
+         aria-labelledby="image_uploaded" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload KP Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" enctype="multipart/form-data"
+                      action="{% url 'blotter:upload_image' case_data.final_case_list.0.blotter_case_id %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <p><strong>NOTE:</strong> Only JPG, JPEG and PNG are allowed.</p>
+                        <label class="form-label" for="kp_form"></label>
+                        {{ image_form.image }}
+                        {{ image_form.form_name }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary fw-semibold"
+                                style="background: #fcfcfd !important; border-color: #58151c !important; color: #58151c"
+                                data-bs-dismiss="modal" title="Close">Close
+                        </button>
+                        <button type="submit" class="btn btn-primary" style="background: #58151c; border: #58151c;" title="Save Changes">
+                            Save changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {# modal for update   #}
+    <div class="modal fade" tabindex="-1" id="update_kp_form_modal" name="update_kp_form_modal"
+         aria-labelledby="image_uploaded" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update KP Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" enctype="multipart/form-data"
+                      action="{% url 'blotter:update_image' case_data.final_case_list.0.blotter_case_id %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <p><strong>NOTE:</strong> Only JPG, JPEG and PNG are allowed.</p>
+                        <label class="form-label" for="kp_form"></label>
+                        {{ case_doc_update_form.update_image }}
+                        {{ case_doc_update_form.update_doc_id }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary fw-semibold"
+                                style="background: #fcfcfd !important; border-color: #58151c !important; color: #58151c"
+                                data-bs-dismiss="modal" title="Close">Close
+                        </button>
+                        <button type="submit" class="btn btn-primary" style="background: #58151c; border: #58151c;" title="Save Changes">
+                            Save changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Modal -->
+    <div class="modal fade" id="information" tabindex="-1" aria-labelledby="information" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Case Information</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'blotter:upload_barangay_cases_member_update_case' case_data.final_case_list.0.blotter_case_id %}"
+                          method="post">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            {{ form.date_filed }}
+                            <label for="date_filed">Date Filed</label>
+                        </div>
+                        <small class='text-danger'>{{ form.date_filed.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.time_filed }}
+                            <label for="time_filed">Time Filed</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {{ form.case_num }}
+                            <label for="case_num">Case Number</label>
+                        </div>
+                        <small class='text-danger'>{{ form.case_num.errors }}</small>
+
+                        <div>
+                            <strong>
+                                <label class="form-label">Complainant</label>
+                            </strong>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {{ form.complainant_fname }}
+                            <label for="complainant_fname">Complainant First Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.complainant_fname.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.complainant_mname }}
+                            <label for="complainant_mname">Complainant Middle Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.complainant_mname.errors }}</small>
+                        <div class="form-floating mb-3">
+                            {{ form.complainant_lname }}
+                            <label for="complainant_lname">Complainant Last Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.complainant_lname.errors }}</small>
+
+                        </fieldset>
+                        <fieldset>
+                            <div class="mb-3">
+                                <label class="form-label d-block">Is the Complainant a Resident or Non-resident?</label>
+                                {% for radio in form.complainant_resident %}
+                                <div class="form-check form-check-inline">
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                        <fieldset>
+
+
+                        <div>
+                            <strong>
+                                <label class="form-label">Respondent</label>
+                            </strong>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {{ form.respondent_fname }}
+                            <label for="respondent_fname">Respondent First Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.respondent_fname.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.respondent_mname }}
+                            <label for="respondent_mname">Respondent Middle Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.respondent_mname.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.respondent_lname }}
+                            <label for="respondent_lname">Respondent Last Name</label>
+                        </div>
+                        <small class='text-danger'>{{ form.respondent_lname.errors }}</small>
+
+                        <fieldset>
+                            <div class="mb-3">
+                                <label class="form-label d-block">Is the Respondent a Resident or Non-resident?</label>
+                                {% for radio in form.respondent_resident %}
+                                <div class="form-check form-check-inline">
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+
+                        <div class="mb-3">
+                            <label class="form-label d-block">Case Type</label>
+                            {% for radio in form.case_type %}
+                                <div class="form-check form-check-inline">
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}"
+                                           class="form-check-label">{{ radio.choice_label }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <small class='text-danger'>{{ form.radio.errors }}</small>
+
+                        <div class="mb-3">
+                            <label for="case_filed" class="form-label">Case File</label>
+                            {{ form.case_filed }}
+                        </div>
+                        <small class='text-danger'>{{ form.case_filed.errors }}</small>
+
+                        <div class="mb-3">
+                            <label for="case_status" class="form-label">Case Status</label>
+                            {{ form.case_status }}
+                        </div>
+                        <small class='text-danger'>{{ form.case_status.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.date_settled }}
+                            <label for="date_settled">Date Settled</label>
+                        </div>
+                        <small class='text-danger'>{{ form.date_settled.errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.time_settled }}
+                            <label for="time_settled">Time Settled</label>
+                        </div>
+                        <small class='text-danger'>{{ form.time_settled.errors }}</small>
+                        <small class='text-danger'>{{ form.non_field_errors }}</small>
+
+                        <div class="form-floating mb-3">
+                            {{ form.current_case_number }}
+                        </div>
+
+                        <input name="view" type="hidden" value="upload_barangay_cases_member">
+
+                        <div class="modal-footer">
+                            <button type="button" id="update-btn" name="update" class="btn btn-update-info" title="Update Information">Update
+                                Information
+                            </button>
+                            <!-- <button type="button" id="clear-info" name="clear" class="btn btn-clear d-none">Clear
+                            </button> -->
+                            <button type="submit" id="update-info" name="update" class="btn btn-update d-none" title="Update Barangay Case">
+                                Update
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'blotter/js/member/case_handler.js' %}"></script>
+    <script defer type='module' src="{% static 'blotter/js/index.js' %}"></script>
+    <script src="{% static 'blotter/js/member/update_input.js' %}"></script>
+{% endblock %}

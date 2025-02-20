@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-5.3.3/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        
+        <div class="row border rounded-5 p-3 bg-white shadow box-area">
+            
+            <div class="col-md-12 right-box">
+                LOGGGGGGGGGGGGGGG IN
+                <div class="row align-items-center">
+                    
+                    <div class="header-text mb-4 text-center mt-3">
+                        <h3>Login</h3>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="form-floating mb-3">
+                            {{ form.username }} 
+                            <label for="username">Username</label>
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            {{ form.password }}
+                            <label for="pass">Password</label>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <button type="submit" id="login" name="login" class="btn btn-login btn-lg w-100 fs-6">Login</button>
+                        </div>
+                    </form>
+
+                    <!-- Display credentials_id if it's passed to the template -->
+                    {% if credentials_id %}
+                        <div class="alert alert-success mt-3">
+                            <strong>Login successful!</strong> Your credentials ID is: {{ credentials_id }}.
+                        </div>
+                    {% endif %}
+
+                    <!-- Display error message if there's any -->
+                    {% if error %}
+                        <div class="alert alert-danger mt-3">
+                            <strong>Error:</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    
+                </div>
+
+            </div>
+        
+        </div>
+    
+    </div>
+</body>
+</html>

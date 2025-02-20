@@ -1,0 +1,130 @@
+<!-- Information Modal -->
+<div class="modal fade" id="information" tabindex="-1" aria-labelledby="information" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Case Information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'blotter:home_member' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        {{ form.date_filed }}
+                        <label for="date_filed">Date Filed</label>
+                    </div>
+                    <small class='text-danger'>{{ form.date_filed.errors }}</small>
+
+                    <div class="form-floating mb-3">
+                        {{ form.case_num }}
+                        <label for="case_num">Case Number</label>
+                    </div>
+                    <small class='text-danger'>{{ form.case_num.errors }}</small>
+
+                    <div>
+                        <strong>
+                            <label class="form-label">Complainant</label>
+                        </strong>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        {{ form.complainant_fname }}
+                        <label for="complainant_fname">Complainant First Name</label>
+                    </div>
+                    <small class='text-danger'>{{ form.complainant_fname.errors }}</small>
+
+                    <div class="form-floating mb-3">
+                        {{ form.complainant_mname }}
+                        <label for="complainant_mname">Complainant Middle Name</label>
+                    </div>
+                    <small class='text-danger'>{{ form.complainant_mname.errors }}</small>
+                    <div class="form-floating mb-3">
+                        {{ form.complainant_lname }}
+                        <label for="complainant_lname">Complainant Last Name</label>
+                    </div>
+                    <small class='text-danger'>{{ form.complainant_lname.errors }}</small>
+
+                    <div>
+                        <strong>
+                            <label class="form-label">Respondent</label>
+                        </strong>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        {{ form.respondent_fname }}
+                        <label for="respondent_fname">Respondent First Name</label>
+                    </div>
+                    <small class='text-danger'>{{ form.respondent_fname.errors }}</small>
+
+                    <div class="form-floating mb-3">
+                        {{ form.respondent_mname }}
+                        <label for="respondent_mname">Respondent Middle Name</label>
+                    </div>
+                    <small class='text-danger'>{{ form.respondent_mname.errors }}</small>
+
+                    <div class="form-floating mb-3">
+                        {{ form.respondent_lname }}
+                        <label for="respondent_lname">Respondent Last Name</label>
+                    </div>
+                    <small class='text-danger'>{{ form.respondent_lname.errors }}</small>
+
+                    <div class="mb-3">
+                        <strong>
+                            <label class="form-label d-block">Case Type</label>
+                        </strong>
+                        {% for radio in form.case_type %}
+                            <div class="form-check form-check-inline">
+                                {{ radio.tag }}
+                                <label for="{{ radio.id_for_label }}"
+                                       class="form-check-label">{{ radio.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <small class='text-danger'>{{ form.radio.errors }}</small>
+
+                    <div class="mb-3">
+                        <label for="case_filed" class="form-label">Case File</label>
+                        {{ form.case_filed }}
+                    </div>
+                    <small class='text-danger'>{{ form.case_filed.errors }}</small>
+
+                    <div class="mb-3">
+                        <strong>
+                            <label for="case_status" class="form-label">Case Status</label>
+                        </strong>
+                        {{ form.case_status }}
+                    </div>
+                    <small class='text-danger'>{{ form.case_status.errors }}</small>
+
+                    <div class="form-floating mb-3">
+                        {{ form.date_settled }}
+                        <label for="date_settled">Date Settled</label>
+                    </div>
+                    <small class='text-danger'>{{ form.date_settled.errors }}</small>
+
+                    <div class="form-floating mb-3">
+                        {{ form.time_settled }}
+                        <label for="time_settled">Time Settled</label>
+                    </div>
+                    <small class='text-danger'>{{ form.time_settled.errors }}</small>
+                    <small class='text-danger'>{{ form.non_field_errors }}</small>
+
+                    <div class="form-floating mb-3">
+                        {{ form.current_case_number }}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="update-btn" name="update" class="btn btn-update-info">Update
+                            Information
+                        </button>
+                        <button type="button" id="clear-info" name="clear" class="btn btn-clear d-none">Clear
+                        </button>
+                        <button type="submit" id="update-info" name="update" class="btn btn-update d-none">Update
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

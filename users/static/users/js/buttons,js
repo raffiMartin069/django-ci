@@ -1,0 +1,145 @@
+
+document.addEventListener('DOMContentLoaded', function () {
+    const acceptButtons = document.querySelectorAll('.accept-btn');
+
+    acceptButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const row = this.closest('tr');  // Get parent table row
+            // const requestId = row.querySelector('.acc-request-id').textContent.trim();
+            const requestId = row.children[0].textContent.trim().replace(/\s+/g, ''); // Remove spaces
+            const nameParts = row.children[2].textContent.trim().split(' ');
+
+            let firstName = '';
+            let middleName = '';
+            let lastName = '';
+
+            // Assume a minimum of two parts: first and last name
+            if (nameParts.length === 2) {
+                firstName = nameParts[0];
+                lastName = nameParts[1];
+            } else if (nameParts.length === 3) {
+                firstName = nameParts[0];
+                middleName = nameParts[1];
+                lastName = nameParts[2];
+            } else if (nameParts.length > 3) {
+                firstName = nameParts[0];
+                middleName = nameParts.slice(1, nameParts.length - 1).join(' ');  // Capture all middle parts
+                lastName = nameParts[nameParts.length - 1];
+            }
+
+            const role = row.children[3].textContent.trim();
+
+            console.log(`Request ID: ${requestId}`);
+            console.log(`First Name: ${firstName}`);
+            console.log(`Middle Name: ${middleName}`);
+            console.log(`Last Name: ${lastName}`);
+            console.log(`Role: ${role}`);
+
+
+            // Prepare the POST data
+            const formData = new FormData();
+            formData.append('account_request_id', requestId);
+            formData.append('fname', firstName);
+            formData.append('mname', middleName);
+            formData.append('lname', lastName);
+            formData.append('role', role);
+            // formData.append('username', firstName.toLowerCase() + lastName.toLowerCase());
+            // formData.append('password', 'test');
+            // formData.append('confirm_password', 'test');
+
+            fetch("{% url 'accept_add_user_account' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCSRFToken(),
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server Response:", data); // Log the server response
+                    if (data.status === 'success') {
+                        alert('User added successfully.');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An unexpected error occurred.');
+                });
+        });
+    });
+
+    function getCSRFToken() {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith('csrftoken=')) {
+                    cookieValue = cookie.substring('csrftoken='.length, cookie.length);
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rejectButtons = document.querySelectorAll('.reject-btn');
+
+    rejectButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const row = this.closest('tr');  // Get parent table row
+            const requestId = row.children[0].textContent.trim().replace(/\s+/g, ''); // Remove spaces
+
+            console.log(`Rejecting Request ID: ${requestId}`);
+
+            // Prepare the POST data
+            const formData = new FormData();
+            formData.append('account_request_id', requestId);
+
+            fetch("{% url 'reject_add_user_account' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCSRFToken(),
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server Response:", data); // Log the server response
+                    if (data.status === 'success') {
+                        alert('User request rejected successfully.');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An unexpected error occurred.');
+                });
+        });
+    });
+
+    function getCSRFToken() {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith('csrftoken=')) {
+                    cookieValue = cookie.substring('csrftoken='.length, cookie.length);
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
+

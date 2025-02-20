@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-5.3.3/css/bootstrap.min.css' %}">
+    <link href="{% static 'vendor/fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/super_admin_user/style.css' %}">
+    
+    <script src="{% static 'vendor/fontawesomefree/js/all.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header class="navbar navbar-expand-lg">
+        <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <!-- <button type="button" id="logout" name="logout" class="btn btn-logout"> -->
+                <div>
+                    <img src="{% static 'images/lupon_logo.png' %}" alt="Logo" class="img-fluid" style="max-height: 50px;">
+                </div>
+                <button type="button" id="goto-dashboard" name="goto-dashboard" class="btn btn-dashboard">
+                    <i class="fa-solid fa-house" style="color: white;"></i>
+                </button>
+                <span class="navbar-brand">Barangay Sto. Niño</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+                <div class="user text-end">
+                    <span class="navbar-text">{{full_name}}</span>
+                </div>
+                <span class="navbar-text d-none d-sm-inline">-</span>
+                <div class="user-type text-end">
+                    <span class="navbar-text">{{user_role}}</span>   
+                </div>
+                <button type="button" id="logout" name="logout" class="btn btn-logout">
+                    <i class="fa-solid fa-right-from-bracket fa-lg" style="color: white;" title="Logout"></i>
+                </button>
+            </div>
+        </div>
+    </header> 
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'add_new_role_account' %}active{% endif %}" href="{% url 'add_new_role_account' %}">Add Account</a>
+                    </li>   
+                    <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'manage_role_account' %}active{% endif %}" href="{% url 'manage_role_account' %}">Manage Accounts</a>
+                    </li>    
+                    <!-- <li class="nav-item me-3">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'logs' %}active{% endif %}" href="{% url 'logs' %}">Logs</a>
+                    </li>          -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="">
+        {% block content %}
+        <!-- Default content can go here -->
+        {% endblock %}
+    </main>
+</body>
+<script src="{% static 'js/common.js' %}"></script>
+</html>
+

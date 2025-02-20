@@ -1,0 +1,133 @@
+{% extends "shared/navigation_bar.html" %}
+{% load static %}
+
+{% block title %}
+Add New Case - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mt-2">Add New Case</h2>
+    <hr class="my-3">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+        <form action="{% url 'blotter:add_case' %}" method="post">
+
+            {% include "shared/messages.html" %}
+
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                {{ form.date_filed }}
+                <label for="date_filed">Date Filed</label>
+            </div>
+            <small class='text-danger'> {{ form.date_filed.errors }} </small>
+
+            <div class="form-floating mb-3">
+                {{ form.time_filed }}
+                <label for="time_filed">Time Filed</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {{ form.case_num }}
+                <label for="case_num">Case Number</label>
+            </div>
+            <small class='text-danger'> {{ form.case_num.errors }} </small>
+
+            <fieldset>
+                <label class="mb-2">Complainant</label>
+                <div class="form-floating mb-3">
+                    {{ form.complainant_fname }}
+                    <label for="complainant_fname">First Name</label>
+                </div>
+                <small class='text-danger'> {{ form.complainant_fname.errors }} </small>
+
+                <div class="form-floating mb-3">
+                    {{ form.complainant_mname }}
+                    <label for="complainant_mname">Middle Name</label>
+                </div>
+                <small class='text-danger'> {{ form.complainant_mname.errors }} </small>
+
+                <div class="form-floating mb-3">
+                    {{ form.complainant_lname }}
+                    <label for="complainant_lname">Last Name</label>
+                </div>
+                <small class='text-danger'> {{ form.complainant_lname.errors }} </small>
+
+            </fieldset>
+            <div class="mb-3">
+                <label class="form-label d-block">Is the Complainant a Resident or Non-resident?</label>
+                {% for radio in form.complainant_resident %}
+                <div class="form-check form-check-inline">
+                    {{ radio.tag }}
+                    <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <fieldset>
+                <label class="mb-2">Respondent</label>
+                <div class="form-floating mb-3">
+                    {{ form.respondent_fname }}
+                    <label for="respondent_fname">First Name</label>
+                </div>
+                <small class='text-danger'> {{ form.respondent_fname.errors }} </small>
+
+                <div class="form-floating mb-3">
+                    {{ form.respondent_mname }}
+                    <label for="respondent_mname">Middle Name</label>
+                </div>
+                <small class='text-danger'> {{ form.respondent_mname.errors }} </small>
+
+                <div class="form-floating mb-3">
+                    {{ form.respondent_lname }}
+                    <label for="respondent_lname">Last Name</label>
+                </div>
+                <small class='text-danger'> {{ form.respondent_lname.errors }} </small>
+
+            </fieldset>
+            <div class="mb-3">
+                <label class="form-label d-block">Is the Respondent a Resident or Non-resident?</label>
+                {% for radio in form.respondent_resident %}
+                <div class="form-check form-check-inline">
+                    {{ radio.tag }}
+                    <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                <label class="form-label d-block">Case Type</label>
+                {% for radio in form.case_type %}
+                <div class="form-check form-check-inline">
+                    {{ radio.tag }}
+                    <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <small class='text-danger'> {{ form.case_type.errors }} </small>
+
+            <div class="mb-3">
+                <label for="case_filed" class="form-label">Case Filed</label>
+                {{ form.case_filed }}
+            </div>
+            <small class='text-danger'> {{ form.case_filed.errors }} </small>
+
+            <div class="button-container col-lg-12 col-md-8 col-sm-10 justify-content-end mb-2">
+                <button type="reset" id="clear" name="clear" class="btn btn-clear" title="Clear Fields">Clear</button>
+                <button type="submit" id="save" name="save" class="btn btn-save" title="Save Barangay Case Information">Save</button>
+            </div>
+        </form>        
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'blotter/js/member/case_handler.js' %}"></script>
+<script>
+(() => {
+    const server_response = "{{ response|escapejs }}";
+    if (server_response !== "New blotter case added."){
+        return;
+    }
+    alert(server_response);
+})();
+
+</script>
+{% endblock %}

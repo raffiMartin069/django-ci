@@ -1,0 +1,181 @@
+{% extends "admin/admin_users_dashboard.html" %}
+{% load static %}
+
+{% block title %}
+Admin - Barangay Sto. Niño
+{% endblock %}
+
+{% block content %}
+
+<!-- Font Awesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container-fluid" data-page="member_home_form">
+    <h2 class="mt-2">Statistics</h2>
+    <hr class="my-3">
+    <div class="row">
+        <!-- Total Residents Box -->
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Cases This Month <b>({{ current_month }})</b></h5>
+                    <h3 class="display-4 fw-bold text-center">{{ total_cases_this_month }}</h3>
+                    <i class="fas fa-file-lines fa-7x mt-3 text-black"></i> <!-- Larger icon in black -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Age Distribution Graph -->
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Case Statistics for This Year <b>({{ current_year }})</b></h5>
+                    <canvas id="ageDistributionGraph" style="width: 100%; max-height: 250px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cases Reported This Year -->
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">Cases Reported This Year <b>({{ current_year }})</b></h5>
+                    <h3 class="display-4 fw-bold text-center">{{ cases_reported_this_year }}</h3>
+                    <i class="fas fa-calendar-days fa-7x mt-2 text-black"></i> <!-- Icon -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <h2 class="mt-2">Recently Modified Barangay Cases</h2>
+    <hr class="my-3">
+    <div class="row">
+        <div class="col-lg-12">
+            {% if messages %}
+                <div>
+                    {% for message in messages %}
+                        <div id="messages" class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="mb-5">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Case Folder</th>
+                        <th scope="col">Modified by</th>
+                        <th scope="col">Date and Time</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for case in renders.final_case_list %}
+                        <tr class="table-row-height">
+                            <td>{{ case.blotter_case_num }}</td>
+                            <td>{{ case.modified_by }}</td>
+                            <td>{{ case.date_time_modified }}</td>
+                            <td>
+                                <div class="button-table-container col-lg-12 col-md-8 col-sm-10 justify-content-start">
+                                    <button class="btn btn-information update-btn"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#information"
+                                            data-case-id="{{ case.blotter_case_id }}"
+                                            data-date-filed="{{ case.date_filed }}"
+                                            data-case-num="{{ case.blotter_case_num }}"
+                                            data-complainant_fname="{{ case.complainant_fname }}"
+                                            data-complainant_mname="{{ case.complainant_mname }}"
+                                            data-complainant_lname="{{ case.complainant_lname }}"
+                                            data-respondent_fname="{{ case.respondent_fname }}"
+                                            data-respondent_mname="{{ case.respondent_mname }}"
+                                            data-respondent_lname="{{ case.respondent_lname }}"
+                                            data-case-type="{{ case.case_type_id }}"
+                                            data-case-filed="{{ case.case_id }}"
+                                            data-case-status="{{ case.blotter_status_id }}"
+                                            data-date-settled="{{ case.date_settled }}"
+                                            data-time-settled="{{ case.time_settled }}"
+                                            data-current_case_number="{{ case.blotter_case_num }}"
+                                            data-is_complainant_resident="{{ case.is_complainant_resident }}">
+                                        Update
+                                    </button>
+                                    <a href="{% url 'blotter:uploaded_barangay_cases_admin' case.blotter_case_id %}"
+                                       id="forms" name="forms" class="btn btn-forms">
+                                        <i class="fa-solid fa-ellipsis"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<!-- JavaScript to render the pie chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const canvas = document.getElementById("ageDistributionGraph");
+
+        if (!canvas) {
+            console.error("Canvas element with id 'ageDistributionGraph' not found.");
+            return;
+        }
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+            console.error("Unable to get context for canvas.");
+            return;
+        }
+
+        const civilCaseCount = Number({{ civil_case_count|default:"0" }}) || 0;
+        const criminalCaseCount = Number({{ criminal_case_count|default:"0" }}) || 0;
+
+        if (isNaN(civilCaseCount) || isNaN(criminalCaseCount)) {
+            console.error("Invalid chart data");
+}
+        // Pie Chart Data
+        const caseDistributionData = {
+            labels: ["Civil Cases", "Criminal Cases"],
+            datasets: [{
+                label: 'Case Distribution',
+                data: [civilCaseCount, criminalCaseCount],
+                backgroundColor: [
+                    'rgba(255, 140, 0, 0.9)',  // Dark Orange for Civil Cases (RGB for dark orange)
+                    'rgba(139, 0, 0, 0.9)'     // Dark Red for Criminal Cases (RGB for dark red)
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        // Create Pie Chart
+        try {
+            new Chart(ctx, {
+                type: 'pie',
+                data: caseDistributionData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Civil and Criminal Cases for {{ current_year }}'
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Error initializing chart:", error);
+        }
+    });
+</script>
+
+{% endblock %}
