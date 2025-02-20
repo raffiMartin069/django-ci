@@ -54,6 +54,10 @@ jobs:
       run:
           sudo -i -u postgres psql -c "CREATE DATABASE dummy;"
 
+    - name: Exit psql
+      run:
+        \q
+
     - name: Restore Schema from Dump
       run: |
         sudo -i -u postgres psql -d dummy -f dummy.sql
