@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DB_NAME: legacy_db
+      DB_NAME: dummy
       DB_ENGINE: ${{ vars.DB_ENGINE }}
       DB_SECRET_KEY: password
       DB_PORT: 5432
