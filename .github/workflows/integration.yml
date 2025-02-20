@@ -54,12 +54,9 @@ jobs:
       run:
           sudo -i -u postgres psql -c "CREATE DATABASE dummy;"
 
-    - name: Check Current Directory Files
-      run: ls -la  # This will list all files to confirm `dummy.sql` exists
-
     - name: Restore Schema from Dump
       run: |
-        sudo -i -u postgres psql -d dummy -f dummy.sql
+        ssudo -u postgres psql -d dummy -f $GITHUB_WORKSPACE/dummy.sql
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | tee models.py
