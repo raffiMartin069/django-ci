@@ -108,7 +108,7 @@ load_dotenv(path_to_dotenv)
 # NOTE: Make sure to install psycopg2-binary or the same library for PostgreSQL
 # NOTE: Make sure to create a PostgreSQL database and user
 # NOTE: Make sure to update the database settings below
-if os.getenv('DB_ENGINE'):
+if os.getenv('DB_ENGINE') and os.getenv('DB_USER'):
     DATABASES = {
         'default': {
             'ENGINE': os.getenv('DB_ENGINE'),
