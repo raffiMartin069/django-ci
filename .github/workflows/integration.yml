@@ -54,6 +54,9 @@ jobs:
       run:
           sudo -i -u postgres psql -c "CREATE DATABASE dummy;"
 
+    - name: Provide access
+      run: sudo chmod 700 $GITHUB_WORKSPACE/dummy.sql
+
     - name: Restore Schema from Dump
       run: |
         sudo -u postgres psql -d dummy -f $GITHUB_WORKSPACE/dummy.sql
