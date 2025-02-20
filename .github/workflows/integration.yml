@@ -47,9 +47,12 @@ jobs:
     - name: Install PostgreSQL Client
       run: sudo apt-get install -y postgresql-client
 
+    - name: Run database
+      run: sudo -i -u postgres psql
+
     - name: Restore Schema from Dump
       run: |
-        PGPASSWORD="password" psql -h postgres -U postgres -d dummy -f dummy.sql
+        PGPASSWORD="password" psql -h localhost -U postgres -d dummy -f dummy.sql
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | tee models.py
