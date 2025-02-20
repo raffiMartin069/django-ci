@@ -56,7 +56,7 @@ jobs:
 
     - name: Restore Schema from Dump
       run: |
-        ssudo -u postgres psql -d dummy -f $GITHUB_WORKSPACE/dummy.sql
+        sudo -u postgres psql -d dummy -f $GITHUB_WORKSPACE/dummy.sql
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | tee models.py
