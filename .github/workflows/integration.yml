@@ -40,16 +40,18 @@ jobs:
       run: |
         python manage.py collectstatic --noinput
 
-    - name: Download SQL Schema
-      run: |
-        wget -O dummy.sql ${{ secrets.DB_SCHEMA }}
+    - name: Install gdown
+      run: pip install gdown
+
+    - name: Download SQL File from Google Drive
+      run: gdown --id {{ secrets.DB_SCHEMA }} -O dummy.sql
 
     - name: Install PostgreSQL Client
       run: sudo apt-get install -y postgresql-client
 
     - name: Run psql
       run: sudo service postgresql restart
-#
+
     - name: Create database
       run:
           sudo -i -u postgres psql -c "CREATE DATABASE dummy;"
