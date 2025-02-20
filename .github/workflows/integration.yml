@@ -9,6 +9,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      DB_NAME: ${{ vars.DB_NAME }}
+      DB_ENGINE: ${{ vars.DB_ENGINE }}
+      DB_SECRET_KEY: ${{ vars.DB_SECRET_KEY }}
+      DB_PORT: ${{ vars.DB_PORT }}
+      DB_USER: ${{ vars.DB_USER }}
+      DB_HOST: ${{ vars.DB_HOST }}
+
     strategy:
       max-parallel: 4
       matrix:
@@ -30,16 +39,6 @@ jobs:
     - name: Collect Static Files
       run: |
         python manage.py collectstatic --noinput
-
-    - name: Add Environment Variables
-      run: |
-        export DB_NAME=${{ vars.DB_NAME }}
-        export DB_ENGINE=${{ vars.DB_ENGINE }}
-        export DB_SECRET_KEY=${{ vars.DB_SECRET_KEY }}
-        export DB_PORT=${{ vars.DB_PORT }}
-        export DB_USER=${{ vars.DB_USER }}
-        export DB_HOST=${{ vars.DB_HOST }}
-      shell: bash
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | tee models.py
