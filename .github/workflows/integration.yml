@@ -40,8 +40,9 @@ jobs:
       run: |
         export my_env_var=${{ env.DB_NAME }} && \
         export my_env_var=${{ env.DB_ENGINE }} && \
-        export my_env_var=${{ env.DB_PASSWORD }} && \
+        export my_env_var=${{ env.DB_SECRET_KEY }} && \
         export my_env_var=${{ env.DB_PORT }} && \
+        export my_env_var=${{ env.DB_USER }} && \
         export my_env_var=${{ env.DB_HOST }}
 
     - name: Integrate legacy DB
