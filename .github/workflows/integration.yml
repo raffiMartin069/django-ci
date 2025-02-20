@@ -33,12 +33,22 @@ jobs:
 
     - name: Add Environment Variables
       run: |
-        export DB_NAME=${{ env.DB_NAME }} && \
-        export DB_ENGINE=${{ env.DB_ENGINE }} && \
-        export DB_SECRET_KEY=${{ env.DB_SECRET_KEY }} && \
-        export DB_PORT=${{ env.DB_PORT }} && \
-        export DB_USER=${{ env.DB_USER }} && \
+        export DB_NAME=${{ env.DB_NAME }}
+        export DB_ENGINE=${{ env.DB_ENGINE }}
+        export DB_SECRET_KEY=${{ env.DB_SECRET_KEY }}
+        export DB_PORT=${{ env.DB_PORT }}
+        export DB_USER=${{ env.DB_USER }}
         export DB_HOST=${{ env.DB_HOST }}
+      shell: bash
+
+    - name: Debug Environment Variables
+      run: |
+        echo "DB_NAME=${DB_NAME}"
+        echo "DB_ENGINE=${DB_ENGINE}"
+        echo "DB_SECRET_KEY=${DB_SECRET_KEY}"
+        echo "DB_PORT=${DB_PORT}"
+        echo "DB_USER=${DB_USER}"
+        echo "DB_HOST=${DB_HOST}"
 
     - name: Integrate legacy DB
       run: python manage.py inspectdb | tee models.py
