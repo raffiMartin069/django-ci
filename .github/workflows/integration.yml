@@ -49,7 +49,7 @@ jobs:
 
     - name: Run psql
       run: sudo service postgresql restart
-
+#
     - name: Create database
       run:
           sudo -i -u postgres psql -c "CREATE DATABASE dummy;"
