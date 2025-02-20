@@ -55,10 +55,7 @@ jobs:
           sudo -i -u postgres psql -c "CREATE DATABASE dummy;"
 
     - name: Provide access
-      run: sudo chmod 644 $GITHUB_WORKSPACE/dummy.sql
-
-    - name: Change Ownership
-      run: sudo chown postgres:postgres $GITHUB_WORKSPACE/dummy.sql
+      run: sudo chmod a+rwx $GITHUB_WORKSPACE
 
     - name: Restore Schema from Dump
       run: |
