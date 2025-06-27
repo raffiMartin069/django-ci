@@ -1,0 +1,54 @@
+name: 🎉 Push & PR Party Bot
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate a fun comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const messages = [
+              "🚀 Great push, captain! Time to blast off to prod!",
+              "🎉 PR incoming! Let’s review like rockstars 🤘",
+              "🤖 Beep boop. Code detected. Reviewing sequence initiated.",
+              "🔥 That commit just lit up the repo!",
+              "👏 Thanks for contributing! You just made this repo 10% cooler."
+            ];
+            
+            const gifs = [
+              "https://media.giphy.com/media/l0ExdMHUDKteztyfe/giphy.gif",
+              "https://media.giphy.com/media/26FPGMHZpA6E0iDfq/giphy.gif",
+              "https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif",
+              "https://media.giphy.com/media/3orieWRr3zzkI2G2ls/giphy.gif"
+            ];
+
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            const gif = gifs[Math.floor(Math.random() * gifs.length)];
+
+            const body = `${message}\n\n![party](${gif})`;
+
+            if (context.eventName === 'pull_request') {
+              github.rest.issues.createComment({
+                issue_number: context.payload.pull_request.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            } else if (context.eventName === 'push') {
+              const commits = context.payload.commits.map(c => `- ${c.message}`).join("\n");
+              github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🎉 New Push Party!`,
+                body: `${message}\n\n${commits}\n\n![push-party](${gif})`
+              });
+            }
